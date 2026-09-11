@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>P&L Calendar — Portfolio Command Center</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #171a22;
+      --border: #2a2f3a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --green: #3dd68c;
+      --green-bg: #1a3d2e;
+      --red: #f07178;
+      --red-bg: #3d1f1f;
+      --flat-bg: #252830;
+      --blue: #6cb6ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1100px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.875rem; margin-bottom: 20px; }
+    .nav { margin-bottom: 20px; }
+    .nav a { color: var(--blue); text-decoration: none; font-size: 0.875rem; }
+    .nav a:hover { text-decoration: underline; }
+    .grid-stats {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      margin-bottom: 24px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .stat .v { font-size: 1.25rem; font-weight: 600; }
+    .stat .l { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+    .year-block { margin-bottom: 32px; }
+    .year-block h2 { font-size: 1.1rem; margin: 0 0 12px; color: var(--muted); }
+    .month-grid {
+      display: grid;
+      grid-template-columns: repeat(12, 1fr);
+      gap: 8px;
+    }
+    @media (max-width: 900px) {
+      .month-grid { grid-template-columns: repeat(6, 1fr); }
+    }
+    @media (max-width: 480px) {
+      .month-grid { grid-template-columns: repeat(4, 1fr); }
+    }
+    .month-cell {
+      aspect-ratio: 1;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 8px 4px;
+      cursor: default;
+      transition: transform 0.1s, box-shadow 0.1s;
+      min-height: 72px;
+    }
+    .month-cell:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.35);
+    }
+    .month-cell.profit { background: var(--green-bg); border-color: #2d6b4f; }
+    .month-cell.loss { background: var(--red-bg); border-color: #6b3333; }
+    .month-cell.flat { background: var(--flat-bg); opacity: 0.7; }
+    .month-cell.future { background: transparent; border-style: dashed; opacity: 0.35; }
+    .month-cell .name { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.04em; }
+    .month-cell .amt { font-size: 0.8rem; font-weight: 600; margin-top: 4px; text-align: center; line-height: 1.2; }
+    .month-cell.profit .amt { color: var(--green); }
+    .month-cell.loss .amt { color: var(--red); }
+    .month-cell.flat .amt { color: var(--muted); }
+    .month-cell .trades { font-size: 0.65rem; color: var(--muted); margin-top: 2px; }
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .dot { width: 14px; height: 14px; border-radius: 4px; border: 1px solid var(--border); }
+    .dot.profit { background: var(--green-bg); border-color: #2d6b4f; }
+    .dot.loss { background: var(--red-bg); border-color: #6b3333; }
+    .dot.flat { background: var(--flat-bg); }
+    .note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; margin-top: 24px; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+    th { color: var(--muted); font-weight: 500; }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); }
+  </style>
+  <script src="js/paths.js"></script>
+  <script src="js/sync-bar.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav"><a href="index.html">← Portfolio Command Center</a> · <a href="setups.html">Setups</a></div>
+    <h1>Monthly P&amp;L Calendar</h1>
+    <p class="sub" id="synced">Loading…</p>
+
+    <div class="grid-stats" id="summary"></div>
+
+    <div class="legend">
+      <span><i class="dot profit"></i> Profit month</span>
+      <span><i class="dot loss"></i> Loss month</span>
+      <span><i class="dot flat"></i> No closed trades</span>
+    </div>
+
+    <div id="years"></div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Month</th><th>Realized P&amp;L</th><th>Trades</th><th>Result</th></tr>
+        </thead>
+        <tbody id="table-body"></tbody>
+      </table>
+    </div>
+
+    <p class="note" id="disclaimer"></p>
+  </div>
+  <script>
+    const fmt = (n) => {
+      const sign = n >= 0 ? '+' : '';
+      const abs = Math.abs(n);
+      if (abs >= 1000) return sign + '$' + abs.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      return sign + '$' + abs.toFixed(0);
+    };
+    const fmtFull = (n) => (n >= 0 ? '+' : '') + '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const MONTH_NAMES = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+
+    function renderCalendar(data) {
+        document.getElementById('synced').textContent =
+          `${data.account_masked} · ${data.source} · synced ${new Date(data.synced_at).toLocaleString()} · ${data.start} → ${data.end}`;
+
+        document.getElementById('summary').innerHTML = [
+          ['Total realized', fmtFull(data.total_realized), data.total_realized >= 0 ? 'pos' : 'neg'],
+          ['Win months', data.win_months, ''],
+          ['Loss months', data.loss_months, ''],
+          ['Flat months', data.flat_months, ''],
+        ].map(([l, v, cls]) =>
+          `<div class="stat"><div class="v ${cls}">${v}</div><div class="l">${l}</div></div>`
+        ).join('');
+
+        document.getElementById('disclaimer').textContent =
+          'Realized P&L from closed trades only (Robinhood PnL hub). Does not include unrealized gains on open positions, deposits, withdrawals, dividends, or fees unless realized on close. Not tax advice.';
+
+        const byYear = {};
+        data.months.forEach(m => {
+          (byYear[m.year] ||= []).push(m);
+        });
+
+        document.getElementById('years').innerHTML = Object.keys(byYear).sort().map(year => {
+          const cells = [];
+          for (let mo = 1; mo <= 12; mo++) {
+            const m = byYear[year].find(x => x.month === mo);
+            if (m) {
+              cells.push(`
+                <div class="month-cell ${m.result}" title="${m.label}: ${fmtFull(m.realized_gain)} (${m.trades} trades)">
+                  <div class="name">${MONTH_NAMES[mo - 1]}</div>
+                  <div class="amt">${fmt(m.realized_gain)}</div>
+                  <div class="trades">${m.trades} trades</div>
+                </div>`);
+            } else {
+              cells.push(`<div class="month-cell future"><div class="name">${MONTH_NAMES[mo - 1]}</div></div>`);
+            }
+          }
+          const yearTotal = byYear[year].reduce((s, m) => s + m.realized_gain, 0);
+          const yearCls = yearTotal >= 0 ? 'pos' : 'neg';
+          return `
+            <div class="year-block">
+              <h2>${year} · <span class="${yearCls}">${fmtFull(yearTotal)}</span></h2>
+              <div class="month-grid">${cells.join('')}</div>
+            </div>`;
+        }).join('');
+
+        document.getElementById('table-body').innerHTML = [...data.months].reverse().map(m => `
+          <tr>
+            <td><strong>${m.label}</strong></td>
+            <td class="${m.realized_gain >= 0 ? 'pos' : 'neg'}">${fmtFull(m.realized_gain)}</td>
+            <td>${m.trades}</td>
+            <td>${m.result === 'profit' ? '🟢 Profit' : m.result === 'loss' ? '🔴 Loss' : '— Flat'}</td>
+          </tr>`).join('');
+    }
+
+    function loadCalendar() {
+      fetch((window.DashboardPaths?.data || '../data/') + 'pnl_calendar.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.json())
+        .then(renderCalendar)
+        .catch(() => {
+          document.getElementById('synced').textContent =
+            'Could not load P&L calendar — tap Refresh or check connection';
+        });
+    }
+
+    loadCalendar();
+    window.addEventListener('portfolio:refresh', loadCalendar);
+  </script>
+</body>
+</html>

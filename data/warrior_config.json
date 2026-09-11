@@ -1,0 +1,26 @@
+{
+  "sleeve_start": 10000,
+  "max_daily_loss": 175,
+  "daily_goal": 175,
+  "risk_per_trade": 75,
+  "max_trades_per_day": 5,
+  "sleeve_drawdown_halt_pct": 20,
+  "phase": "paper",
+  "core_account_note": "Keep ~$104k separate — Kullamaggie/LEAPS/cash. Warrior sleeve is fenced $10k.",
+  "schedule_et": {
+    "premarket_scan": "7:00-9:25",
+    "trade_window": "9:30-10:30",
+    "flat_by": "15:55"
+  },
+  "gap_and_go": {
+    "min_gap_pct": 4,
+    "require_catalyst": true,
+    "prefer_float_millions_max": 20,
+    "prefer_price_max": 25,
+    "entries": ["premarket_high_break", "1min_ORH", "red_to_green"]
+  },
+  "sources": [
+    "https://www.warriortrading.com/gap-go/",
+    "https://www.warriortrading.com/day-trading/"
+  ]
+}
