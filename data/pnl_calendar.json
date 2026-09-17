@@ -1,0 +1,173 @@
+{
+  "synced_at": "2026-08-29T03:36:24Z",
+  "account_masked": "\u2022\u2022\u2022\u20220603",
+  "source": "Robinhood realized P&L (closed trades only)",
+  "start": "2025-01",
+  "end": "2026-08",
+  "total_realized": 38716.88,
+  "win_months": 13,
+  "loss_months": 6,
+  "flat_months": 1,
+  "months": [
+    {
+      "year": 2025,
+      "month": 1,
+      "label": "Jan 2025",
+      "realized_gain": 10915.26,
+      "trades": 59,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 2,
+      "label": "Feb 2025",
+      "realized_gain": 373.73,
+      "trades": 13,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 3,
+      "label": "Mar 2025",
+      "realized_gain": -21574.31,
+      "trades": 67,
+      "result": "loss"
+    },
+    {
+      "year": 2025,
+      "month": 4,
+      "label": "Apr 2025",
+      "realized_gain": 386.19,
+      "trades": 19,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 5,
+      "label": "May 2025",
+      "realized_gain": 0.0,
+      "trades": 0,
+      "result": "flat"
+    },
+    {
+      "year": 2025,
+      "month": 6,
+      "label": "Jun 2025",
+      "realized_gain": 140.0,
+      "trades": 1,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 7,
+      "label": "Jul 2025",
+      "realized_gain": 25863.03,
+      "trades": 55,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 8,
+      "label": "Aug 2025",
+      "realized_gain": 1764.42,
+      "trades": 13,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 9,
+      "label": "Sep 2025",
+      "realized_gain": 2429.41,
+      "trades": 28,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 10,
+      "label": "Oct 2025",
+      "realized_gain": 4605.63,
+      "trades": 33,
+      "result": "profit"
+    },
+    {
+      "year": 2025,
+      "month": 11,
+      "label": "Nov 2025",
+      "realized_gain": -13113.66,
+      "trades": 19,
+      "result": "loss"
+    },
+    {
+      "year": 2025,
+      "month": 12,
+      "label": "Dec 2025",
+      "realized_gain": 764.42,
+      "trades": 27,
+      "result": "profit"
+    },
+    {
+      "year": 2026,
+      "month": 1,
+      "label": "Jan 2026",
+      "realized_gain": -175.67,
+      "trades": 73,
+      "result": "loss"
+    },
+    {
+      "year": 2026,
+      "month": 2,
+      "label": "Feb 2026",
+      "realized_gain": -3508.73,
+      "trades": 52,
+      "result": "loss"
+    },
+    {
+      "year": 2026,
+      "month": 3,
+      "label": "Mar 2026",
+      "realized_gain": 3107.27,
+      "trades": 52,
+      "result": "profit"
+    },
+    {
+      "year": 2026,
+      "month": 4,
+      "label": "Apr 2026",
+      "realized_gain": -31.4,
+      "trades": 15,
+      "result": "loss"
+    },
+    {
+      "year": 2026,
+      "month": 5,
+      "label": "May 2026",
+      "realized_gain": 2139.65,
+      "trades": 12,
+      "result": "profit"
+    },
+    {
+      "year": 2026,
+      "month": 6,
+      "label": "Jun 2026",
+      "realized_gain": -5494.23,
+      "trades": 44,
+      "result": "loss"
+    },
+    {
+      "year": 2026,
+      "month": 7,
+      "label": "Jul 2026",
+      "realized_gain": 12454.41,
+      "trades": 57,
+      "result": "profit"
+    },
+    {
+      "year": 2026,
+      "month": 8,
+      "label": "Aug 2026",
+      "realized_gain": 17671.46,
+      "trades": 150,
+      "result": "profit"
+    }
+  ]
+}

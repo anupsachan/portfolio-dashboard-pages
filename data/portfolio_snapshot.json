@@ -1,0 +1,487 @@
+{
+  "synced_at": "2026-09-17T00:38:20Z",
+  "account": {
+    "number_masked": "\u2022\u2022\u2022\u20220603",
+    "type": "margin",
+    "total_value": 102751.56,
+    "equity_value": 44623.12,
+    "options_value": 38053.0,
+    "crypto_value": 1574.87,
+    "cash": 18500.57,
+    "buying_power": 97650.65
+  },
+  "stocks": [
+    {
+      "symbol": "CSEX",
+      "qty": 501.0,
+      "avg": 12.0,
+      "price": 12.32,
+      "value": 6170.0,
+      "pnl_pct": 2.6,
+      "weight_pct": 13.8,
+      "action": "Observe",
+      "logic": "501 sh ~$12 \u2014 large CLS-adjacent line; review size"
+    },
+    {
+      "symbol": "RGTI",
+      "qty": 380.0,
+      "avg": 16.34,
+      "price": 14.96,
+      "value": 5685.0,
+      "pnl_pct": -8.4,
+      "weight_pct": 12.7,
+      "action": "Sell",
+      "logic": "Speculative quantum; largest equity line"
+    },
+    {
+      "symbol": "APLD",
+      "qty": 215.0,
+      "avg": 30.23,
+      "price": 24.98,
+      "value": 5371.0,
+      "pnl_pct": -17.4,
+      "weight_pct": 12.0,
+      "action": "Sell",
+      "logic": "Stock + losing put spreads"
+    },
+    {
+      "symbol": "COST",
+      "qty": 5.0,
+      "avg": 916.2,
+      "price": 895.1,
+      "value": 4476.0,
+      "pnl_pct": -2.3,
+      "weight_pct": 10.0,
+      "action": "Keep",
+      "logic": "New 5 sh defensive; ~$916"
+    },
+    {
+      "symbol": "AMAT",
+      "qty": 10.010899,
+      "avg": 533.87,
+      "price": 420.91,
+      "value": 4214.0,
+      "pnl_pct": -21.2,
+      "weight_pct": 9.4,
+      "action": "Observe",
+      "logic": "Stock ~$455; ITM put spreads remain"
+    },
+    {
+      "symbol": "SOUN",
+      "qty": 700.0,
+      "avg": 6.88,
+      "price": 6.01,
+      "value": 4207.0,
+      "pnl_pct": -12.6,
+      "weight_pct": 9.4,
+      "action": "Sell",
+      "logic": "Pending sell order on 700 shares"
+    },
+    {
+      "symbol": "NFLX",
+      "qty": 50.0,
+      "avg": 76.29,
+      "price": 76.82,
+      "value": 3841.0,
+      "pnl_pct": 0.7,
+      "weight_pct": 8.6,
+      "action": "Keep",
+      "logic": "50 sh core; new Dec $80C today"
+    },
+    {
+      "symbol": "AAPL",
+      "qty": 7.0,
+      "avg": 292.55,
+      "price": 333.46,
+      "value": 2334.0,
+      "pnl_pct": 14.0,
+      "weight_pct": 5.2,
+      "action": "Keep",
+      "logic": "Quality ballast"
+    },
+    {
+      "symbol": "NVDA",
+      "qty": 10.0,
+      "avg": 215.64,
+      "price": 215.64,
+      "value": 2156.0,
+      "pnl_pct": 0.0,
+      "weight_pct": 4.8,
+      "action": "Keep",
+      "logic": "Core 10 sh"
+    },
+    {
+      "symbol": "SOFI",
+      "qty": 101.0,
+      "avg": 16.9,
+      "price": 17.01,
+      "value": 1718.0,
+      "pnl_pct": 0.7,
+      "weight_pct": 3.9,
+      "action": "Observe",
+      "logic": "101 sh + 70 Dec calls \u2014 size vs thesis"
+    },
+    {
+      "symbol": "IOT",
+      "qty": 27.0,
+      "avg": 39.63,
+      "price": 40.72,
+      "value": 1099.0,
+      "pnl_pct": 2.8,
+      "weight_pct": 2.5,
+      "action": "Observe",
+      "logic": "27 sh + Oct $40C; watch $42.63 ORH"
+    },
+    {
+      "symbol": "WMT",
+      "qty": 10.023745,
+      "avg": 103.82,
+      "price": 107.65,
+      "value": 1079.0,
+      "pnl_pct": 3.7,
+      "weight_pct": 2.4,
+      "action": "Keep",
+      "logic": "Defensive; ~$107"
+    },
+    {
+      "symbol": "TSLA",
+      "qty": 2.0,
+      "avg": 366.7,
+      "price": 359.95,
+      "value": 720.0,
+      "pnl_pct": -1.8,
+      "weight_pct": 1.6,
+      "action": "Keep",
+      "logic": "Small satellite"
+    },
+    {
+      "symbol": "META",
+      "qty": 1.0,
+      "avg": 544.62,
+      "price": 679.38,
+      "value": 679.0,
+      "pnl_pct": 24.7,
+      "weight_pct": 1.5,
+      "action": "Keep",
+      "logic": "1 sh; Dec put spread remains"
+    },
+    {
+      "symbol": "AVGO",
+      "qty": 1.0,
+      "avg": 392.56,
+      "price": 342.63,
+      "value": 343.0,
+      "pnl_pct": -12.7,
+      "weight_pct": 0.8,
+      "action": "Observe",
+      "logic": "1 share; put spreads still on"
+    },
+    {
+      "symbol": "CLS",
+      "qty": 1.0,
+      "avg": 310.05,
+      "price": 328.0,
+      "value": 328.0,
+      "pnl_pct": 5.8,
+      "weight_pct": 0.7,
+      "action": "Keep",
+      "logic": "1 sh dust; put spreads still on"
+    },
+    {
+      "symbol": "HOOD",
+      "qty": 1.0,
+      "avg": 94.33,
+      "price": 105.96,
+      "value": 106.0,
+      "pnl_pct": 12.3,
+      "weight_pct": 0.2,
+      "action": "Observe",
+      "logic": "1 share; watch $125 ORH"
+    },
+    {
+      "symbol": "PYPL",
+      "qty": 1.0,
+      "avg": 51.17,
+      "price": 52.89,
+      "value": 53.0,
+      "pnl_pct": 3.4,
+      "weight_pct": 0.1,
+      "action": "Sell",
+      "logic": "1 share dust"
+    },
+    {
+      "symbol": "IBIT",
+      "qty": 1.0,
+      "avg": 35.43,
+      "price": 43.21,
+      "value": 43.0,
+      "pnl_pct": 22.0,
+      "weight_pct": 0.1,
+      "action": "Observe",
+      "logic": "Trimmed 75\u21921; leftover share"
+    },
+    {
+      "symbol": "QQQ",
+      "qty": 0.003719,
+      "avg": 707.18,
+      "price": 709.77,
+      "value": 3.0,
+      "pnl_pct": 0.4,
+      "weight_pct": 0.0,
+      "action": "Sell",
+      "logic": "Rounding error"
+    }
+  ],
+  "options": [
+    {
+      "symbol": "SPXW",
+      "legs": "0DTE call",
+      "exp": "2026-09-16",
+      "qty": 1,
+      "dte": 0,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Expiring today \u2014 pending expiration"
+    },
+    {
+      "symbol": "SMCI",
+      "legs": "39 call",
+      "exp": "2026-12-18",
+      "qty": 20,
+      "dte": 93,
+      "pnl_pct": 0.0,
+      "action": "Keep",
+      "logic": "LEAPS \u00d720; AI momentum"
+    },
+    {
+      "symbol": "SOFI",
+      "legs": "17 + 20 call",
+      "exp": "2026-12-18",
+      "qty": 70,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "70 Dec calls (17C\u00d720 + 20C\u00d750)"
+    },
+    {
+      "symbol": "NVDA",
+      "legs": "215 call",
+      "exp": "2026-11-20",
+      "qty": 5,
+      "dte": 66,
+      "pnl_pct": 0.0,
+      "action": "Keep",
+      "logic": "Nov LEAPS \u00d75"
+    },
+    {
+      "symbol": "NVDA",
+      "legs": "210 call",
+      "exp": "2026-12-18",
+      "qty": 1,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Keep",
+      "logic": "Dec LEAPS + 10 sh"
+    },
+    {
+      "symbol": "CLS",
+      "legs": "310 call",
+      "exp": "2026-12-18",
+      "qty": 1,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Keep",
+      "logic": "Dec LEAPS; stock ~$317"
+    },
+    {
+      "symbol": "AVGO",
+      "legs": "340 call",
+      "exp": "2026-12-18",
+      "qty": 1,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "New Dec LEAPS"
+    },
+    {
+      "symbol": "QQQ",
+      "legs": "705 call",
+      "exp": "2026-12-31",
+      "qty": 1,
+      "dte": 107,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "Index LEAPS hedge/beta"
+    },
+    {
+      "symbol": "PYPL",
+      "legs": "52.5 call",
+      "exp": "2026-12-18",
+      "qty": 10,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "Dec LEAPS \u00d710"
+    },
+    {
+      "symbol": "SHOP",
+      "legs": "130 call",
+      "exp": "2026-12-18",
+      "qty": 1,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "Dec LEAPS"
+    },
+    {
+      "symbol": "NFLX",
+      "legs": "80 call",
+      "exp": "2026-12-18",
+      "qty": 1,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "Dec call; stock ~$78"
+    },
+    {
+      "symbol": "NKE",
+      "legs": "37.5 call",
+      "exp": "2026-12-18",
+      "qty": 10,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Observe",
+      "logic": "Dec LEAPS turnaround"
+    },
+    {
+      "symbol": "AMAT",
+      "legs": "420/422.5 puts",
+      "exp": "2026-09-25",
+      "qty": 10,
+      "dte": 10,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "New Sep put spread; AMAT ~$422"
+    },
+    {
+      "symbol": "AMAT",
+      "legs": "505/500 puts",
+      "exp": "2026-10-02",
+      "qty": 2,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Legacy ITM spread"
+    },
+    {
+      "symbol": "AMAT",
+      "legs": "490/485 puts",
+      "exp": "2026-09-25",
+      "qty": 4,
+      "dte": 10,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Legacy ITM; pending close"
+    },
+    {
+      "symbol": "CLS",
+      "legs": "310/305 puts",
+      "exp": "2026-10-02",
+      "qty": 4,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Near ATM put spread"
+    },
+    {
+      "symbol": "CLS",
+      "legs": "295/290 puts",
+      "exp": "2026-09-25",
+      "qty": 5,
+      "dte": 10,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Pending close Sep 25"
+    },
+    {
+      "symbol": "AVGO",
+      "legs": "395/390 puts",
+      "exp": "2026-10-02",
+      "qty": 2,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "ITM put spread"
+    },
+    {
+      "symbol": "AVGO",
+      "legs": "370/365 puts",
+      "exp": "2026-10-02",
+      "qty": 10,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Deep ITM puts"
+    },
+    {
+      "symbol": "APLD",
+      "legs": "27/26 puts",
+      "exp": "2026-10-02",
+      "qty": 20,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "APLD ~$23; OTM now"
+    },
+    {
+      "symbol": "BABA",
+      "legs": "125/120 puts",
+      "exp": "2026-11-20",
+      "qty": 4,
+      "dte": 66,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Nov spread"
+    },
+    {
+      "symbol": "META",
+      "legs": "530/520 puts",
+      "exp": "2026-12-18",
+      "qty": 2,
+      "dte": 94,
+      "pnl_pct": 0.0,
+      "action": "Keep",
+      "logic": "OTM; META ~$670"
+    },
+    {
+      "symbol": "COIN",
+      "legs": "149/148 puts",
+      "exp": "2026-09-25",
+      "qty": 20,
+      "dte": 10,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Pending close Sep 25"
+    },
+    {
+      "symbol": "SPCX",
+      "legs": "135/134 puts",
+      "exp": "2026-10-02",
+      "qty": 10,
+      "dte": 17,
+      "pnl_pct": 0.0,
+      "action": "Close",
+      "logic": "Orphan spread"
+    },
+    {
+      "symbol": "VIX",
+      "legs": "15 call",
+      "exp": "2026-12-16",
+      "qty": 10,
+      "dte": 92,
+      "pnl_pct": -6.7,
+      "action": "Trim",
+      "logic": "Vol hedge"
+    }
+  ]
+}

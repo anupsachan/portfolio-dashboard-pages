@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Warrior Trading — $10k Day Trading Sleeve</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #171a22;
+      --border: #2a2f3a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --green: #3dd68c;
+      --red: #f07178;
+      --yellow: #e7c547;
+      --blue: #6cb6ff;
+      --orange: #f0a050;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 960px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    h2 { font-size: 1.15rem; margin: 0 0 10px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 8px; color: var(--orange); }
+    .sub { color: var(--muted); font-size: 0.875rem; margin-bottom: 20px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; font-size: 0.875rem; }
+    .nav a { color: var(--blue); text-decoration: none; }
+    .nav a:hover { text-decoration: underline; }
+    .nav .sep { color: var(--border); }
+    .nav .here { color: var(--orange); font-weight: 600; }
+
+    .hero {
+      background: linear-gradient(135deg, #2a1f14 0%, var(--surface) 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+    }
+    .hero p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .hero .quote { margin-top: 12px; font-style: italic; color: var(--text); border-left: 3px solid var(--orange); padding-left: 12px; }
+
+    .setup-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 10px;
+      margin-bottom: 24px;
+    }
+    .setup-nav a {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .setup-nav a:hover { border-color: var(--orange); }
+    .setup-nav .num { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .setup-nav .title { font-weight: 600; margin-top: 4px; }
+    .setup-nav .plain { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      scroll-margin-top: 16px;
+    }
+
+    .stats {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      margin-bottom: 16px;
+    }
+    .stat {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .stat .v { font-size: 1.2rem; font-weight: 600; }
+    .stat .l { color: var(--muted); font-size: 0.72rem; margin-top: 4px; }
+    .stat.warn .v { color: var(--red); }
+    .stat.ok .v { color: var(--green); }
+
+    .phase-bar {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 16px;
+    }
+    .phase {
+      flex: 1;
+      min-width: 140px;
+      padding: 10px 12px;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      cursor: pointer;
+      font-size: 0.8rem;
+      text-align: center;
+    }
+    .phase.active { border-color: var(--orange); background: #2a1f14; }
+    .phase .name { font-weight: 600; }
+    .phase .desc { color: var(--muted); font-size: 0.72rem; margin-top: 4px; }
+
+    .checklist { list-style: none; margin: 0; padding: 0; }
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 3px;
+      accent-color: var(--orange);
+    }
+    .checklist.done li { opacity: 0.55; }
+
+    .sizer, .row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--muted); min-width: 100px; }
+    input, select, textarea {
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 8px; font-size: 0.875rem;
+    }
+    textarea { width: 100%; min-height: 48px; resize: vertical; }
+    button {
+      background: var(--orange); color: #0f1117; border: none; border-radius: 6px;
+      padding: 8px 14px; font-weight: 600; cursor: pointer; font-size: 0.875rem;
+    }
+    button.secondary { background: var(--surface); color: var(--text); border: 1px solid var(--border); }
+    button.danger { background: #3d1f1f; color: var(--red); border: 1px solid var(--red); }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+
+    .result {
+      margin-top: 12px; padding: 12px; border-radius: 8px;
+      background: var(--bg); border: 1px solid var(--border); font-size: 0.875rem;
+    }
+    .result.blocked { border-color: var(--red); color: var(--red); }
+
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--bg); max-height: 320px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; position: sticky; top: 0; background: var(--bg); }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.68rem; font-weight: 600; }
+    .pill.gap { background: #2a1f14; color: var(--orange); }
+    .pill.micro { background: #1a2a3d; color: var(--blue); }
+    .pill.flag { background: #1a3d2e; color: var(--green); }
+
+    .steps { margin: 0; padding-left: 20px; }
+    .steps li { margin-bottom: 8px; font-size: 0.875rem; }
+
+    .banner {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 16px;
+      font-size: 0.875rem;
+    }
+    .banner.stop { background: #3d1f1f; border: 1px solid var(--red); color: var(--red); }
+    .banner.go { background: #1a3d2e; border: 1px solid var(--green); color: var(--green); }
+    .banner.hide { display: none; }
+
+    .two-col { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+
+    .source { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+    .source a { color: var(--blue); }
+  </style>
+  <script src="js/paths.js"></script>
+  <script src="js/sync-bar.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html">← Portfolio</a>
+      <span class="sep">·</span>
+      <a href="setups.html">Qullamaggie Setups</a>
+      <span class="sep">·</span>
+      <a href="calendar.html">P&amp;L Calendar</a>
+      <span class="sep">·</span>
+      <span class="here">Warrior $10k</span>
+    </nav>
+
+    <h1>Warrior Trading — $10k Sleeve</h1>
+    <p class="sub">Ross Cameron day-trading playbook · Gap &amp; Go · Micro pullback · flat by close</p>
+
+    <div class="hero">
+      <p>Separate bucket from your swing/LEAPS book. Trade momentum <strong>9:30–10:30 AM ET</strong>, take base hits, stop when daily limit hit.</p>
+      <p class="quote">"Until you can prove profitability in a simulator, you have no business putting real money in the market." — Ross Cameron</p>
+    </div>
+
+    <div class="setup-nav">
+      <a href="#dashboard"><div class="num">Live</div><div class="title">Dashboard</div><div class="plain">Sleeve P&amp;L &amp; limits</div></a>
+      <a href="#checklist"><div class="num">Daily</div><div class="title">Checklist</div><div class="plain">Premarket → close</div></a>
+      <a href="#gap"><div class="num">Setup 1</div><div class="title">Gap &amp; Go</div><div class="plain">4%+ gap + catalyst</div></a>
+      <a href="#micro"><div class="num">Setup 2</div><div class="title">Micro pullback</div><div class="plain">Fast momentum entry</div></a>
+      <a href="#log"><div class="num">Log</div><div class="title">Trade journal</div><div class="plain">Track every trade</div></a>
+    </div>
+
+    <!-- DASHBOARD -->
+    <section class="card" id="dashboard">
+      <h2>Sleeve dashboard</h2>
+      <div id="session-banner" class="banner hide"></div>
+
+      <div class="phase-bar" id="phase-bar">
+        <div class="phase" data-phase="paper"><div class="name">Phase 0</div><div class="desc">Paper / simulator</div></div>
+        <div class="phase" data-phase="micro"><div class="name">Phase 1</div><div class="desc">Live · 10–25 sh</div></div>
+        <div class="phase" data-phase="full"><div class="name">Phase 2</div><div class="desc">Full sizing</div></div>
+      </div>
+
+      <div class="row">
+        <label>Sleeve start $<input type="number" id="cfg-start" value="10000" step="100" /></label>
+        <label>Current sleeve $<input type="number" id="cfg-balance" value="10000" step="1" /></label>
+        <label>Max daily loss $<input type="number" id="cfg-maxloss" value="175" step="25" /></label>
+        <label>Daily goal $<input type="number" id="cfg-goal" value="175" step="25" /></label>
+        <label>Risk/trade $<input type="number" id="cfg-risk" value="75" step="25" /></label>
+        <label>Max trades/day<input type="number" id="cfg-maxtrades" value="5" min="1" max="20" /></label>
+      </div>
+      <button type="button" class="secondary" id="save-cfg">Save settings</button>
+
+      <div class="stats" style="margin-top:16px">
+        <div class="stat" id="stat-balance"><div class="v">$10,000</div><div class="l">Sleeve balance</div></div>
+        <div class="stat" id="stat-today"><div class="v">$0</div><div class="l">Today P&amp;L (logged)</div></div>
+        <div class="stat" id="stat-trades"><div class="v">0</div><div class="l">Trades today</div></div>
+        <div class="stat" id="stat-left"><div class="v">$175</div><div class="l">Loss room left</div></div>
+        <div class="stat" id="stat-win"><div class="v">—</div><div class="l">Win rate (all log)</div></div>
+        <div class="stat" id="stat-dd"><div class="v">0%</div><div class="l">Sleeve drawdown</div></div>
+      </div>
+    </section>
+
+    <!-- CHECKLIST -->
+    <section class="card" id="checklist">
+      <h2>Today's session — <span id="today-date"></span></h2>
+      <div class="two-col">
+        <div>
+          <h3>Premarket (7:00–9:25 AM)</h3>
+          <ul class="checklist" id="chk-pre">
+            <li><input type="checkbox" data-id="pre1" /><span>Checked daily loss limit — know your stop-trading number</span></li>
+            <li><input type="checkbox" data-id="pre2" /><span>Scanned gappers <strong>≥ 4%</strong> with volume</span></li>
+            <li><input type="checkbox" data-id="pre3" /><span>Confirmed <strong>catalyst</strong> (news, earnings, PR) for each watch name</span></li>
+            <li><input type="checkbox" data-id="pre4" /><span>Marked <strong>premarket high</strong> on each candidate</span></li>
+            <li><input type="checkbox" data-id="pre5" /><span>Noted float (prefer &lt; 20M) and price ($2–$25 ideal)</span></li>
+            <li><input type="checkbox" data-id="pre6" /><span>Charts ready: 1-min + 5-min, 9 EMA + VWAP</span></li>
+          </ul>
+        </div>
+        <div>
+          <h3>Market open (9:30–10:30 AM)</h3>
+          <ul class="checklist" id="chk-open">
+            <li><input type="checkbox" data-id="op1" /><span>Only A+ setups — Gap &amp; Go or micro pullback</span></li>
+            <li><input type="checkbox" data-id="op2" /><span>Entry: PM high break, 1-min ORH, or red-to-green</span></li>
+            <li><input type="checkbox" data-id="op3" /><span>Stop placed <strong>before</strong> entry (pullback low / LOD)</span></li>
+            <li><input type="checkbox" data-id="op4" /><span>Position sized to $ risk — not gut feel</span></li>
+            <li><input type="checkbox" data-id="op5" /><span>Stopped after <strong>2 losers in a row</strong> or max daily loss</span></li>
+            <li><input type="checkbox" data-id="op6" /><span>Stopped new trades after <strong>daily goal</strong> hit</span></li>
+          </ul>
+          <h3>Close (3:55 PM)</h3>
+          <ul class="checklist" id="chk-close">
+            <li><input type="checkbox" data-id="cl1" /><span><strong>Flat</strong> — no overnight in Warrior sleeve</span></li>
+            <li><input type="checkbox" data-id="cl2" /><span>All trades logged below with setup tag</span></li>
+            <li><input type="checkbox" data-id="cl3" /><span>Review: what worked / what was FOMO</span></li>
+          </ul>
+        </div>
+      </div>
+      <button type="button" class="secondary" id="reset-checklist" style="margin-top:12px">Reset today's checkboxes</button>
+    </section>
+
+    <!-- GAP WATCHLIST -->
+    <section class="card" id="gaps">
+      <h2>Gap watchlist (today)</h2>
+      <div class="row">
+        <label>Symbol<input id="gap-sym" placeholder="ABCD" maxlength="6" style="text-transform:uppercase" /></label>
+        <label>Gap %<input type="number" id="gap-pct" placeholder="6.5" step="0.1" /></label>
+        <label>PM high $<input type="number" id="gap-pmh" step="0.01" /></label>
+        <label>Catalyst<input id="gap-cat" placeholder="FDA, earnings…" /></label>
+        <label style="justify-content:flex-end"><span>&nbsp;</span><button type="button" id="add-gap">Add</button></label>
+      </div>
+      <div class="table-wrap">
+        <table>
+          <thead><tr><th>Symbol</th><th>Gap</th><th>PM high</th><th>Catalyst</th><th>Entry plan</th><th></th></tr></thead>
+          <tbody id="gap-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- SIZER -->
+    <section class="card" id="sizer">
+      <h2>Day-trade position sizer</h2>
+      <div class="sizer">
+        <label>Entry $<input type="number" id="sz-entry" value="8" step="0.01" /></label>
+        <label>Stop $<input type="number" id="sz-stop" value="7.75" step="0.01" /></label>
+        <label>Target $<input type="number" id="sz-target" value="8.50" step="0.01" /></label>
+        <label>Phase override<select id="sz-phase">
+          <option value="auto">Auto from phase</option>
+          <option value="paper">Paper (0 sh)</option>
+          <option value="micro">Micro (max 25 sh)</option>
+          <option value="full">Full size</option>
+        </select></label>
+      </div>
+      <div class="result" id="sz-result">Enter entry and stop.</div>
+    </section>
+
+    <!-- SETUP REFERENCE -->
+    <section class="card" id="gap">
+      <h2>Setup 1 — Gap &amp; Go</h2>
+      <ul class="steps">
+        <li><strong>Scan:</strong> gap ≥ <strong>4%</strong>, high volume, clear catalyst</li>
+        <li><strong>Prefer:</strong> float &lt; 20M, price $2–$25 (higher OK if very fast)</li>
+        <li><strong>Window:</strong> 9:30–10:00 AM ET primary</li>
+        <li><strong>Entry:</strong> break PM high · 1-min ORH · red-to-green above prior close</li>
+        <li><strong>Stop:</strong> low of entry / pullback candle (tight)</li>
+        <li><strong>Target:</strong> base hits — $0.25–$0.50/share or next half/whole dollar</li>
+      </ul>
+    </section>
+
+    <section class="card" id="micro">
+      <h2>Setup 2 — Micro pullback</h2>
+      <ul class="steps">
+        <li>Stock already ripping on news + scanner</li>
+        <li>One red 1-min candle (pause) — or bull flag on 10-sec chart</li>
+        <li><strong>Entry:</strong> first candle that breaks high of pullback after volume returns</li>
+        <li><strong>Stop:</strong> low of pullback candle — do not widen</li>
+        <li>Higher risk than waiting for 5-min setup — only on strongest names</li>
+      </ul>
+      <h3>Indicators (Ross Cameron)</h3>
+      <ul class="steps">
+        <li><strong>9 EMA</strong> — first pullback support</li>
+        <li><strong>20 EMA</strong> — deeper pullback support</li>
+        <li><strong>VWAP</strong> — above = bullish; fail to reclaim = exit</li>
+        <li><strong>Volume</strong> — must confirm breaks</li>
+      </ul>
+    </section>
+
+    <!-- TRADE LOG -->
+    <section class="card" id="log">
+      <h2>Trade journal</h2>
+      <div class="row">
+        <label>Date<input type="date" id="log-date" /></label>
+        <label>Symbol<input id="log-sym" placeholder="XYZ" style="text-transform:uppercase" maxlength="6" /></label>
+        <label>Setup<select id="log-setup">
+          <option value="Gap & Go">Gap &amp; Go</option>
+          <option value="Micro PB">Micro pullback</option>
+          <option value="Bull flag">Bull flag</option>
+          <option value="Red-Green">Red-to-green</option>
+          <option value="Other">Other</option>
+        </select></label>
+        <label>Shares<input type="number" id="log-shares" min="1" /></label>
+        <label>Entry $<input type="number" id="log-entry" step="0.01" /></label>
+        <label>Exit $<input type="number" id="log-exit" step="0.01" /></label>
+        <label>Notes<input id="log-notes" placeholder="ORH break, stopped LOD…" /></label>
+      </div>
+      <button type="button" id="add-trade">Log trade</button>
+      <button type="button" class="secondary" id="export-csv">Export CSV</button>
+      <button type="button" class="danger" id="clear-log">Clear all trades</button>
+
+      <div class="table-wrap" style="margin-top:16px;max-height:400px">
+        <table>
+          <thead><tr>
+            <th>Date</th><th>Symbol</th><th>Setup</th><th>Sh</th><th>Entry</th><th>Exit</th><th>P&amp;L</th><th>Notes</th><th></th>
+          </tr></thead>
+          <tbody id="log-body"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <div class="source">
+      Based on
+      <a href="https://www.warriortrading.com/gap-go/" target="_blank" rel="noopener">Warrior Trading — Gap &amp; Go</a>,
+      <a href="https://www.warriortrading.com/day-trading/" target="_blank" rel="noopener">Day Trading Guide</a>
+      (Ross Cameron). Educational only — not financial advice. Most day traders lose money.
+    </div>
+  </div>
+
+  <script>
+    const LS = {
+      cfg: 'warrior_cfg_v1',
+      phase: 'warrior_phase_v1',
+      checklist: 'warrior_chk_v1',
+      gaps: 'warrior_gaps_v1',
+      trades: 'warrior_trades_v1',
+    };
+
+    const todayKey = () => new Date().toISOString().slice(0, 10);
+
+    function loadCfg() {
+      try {
+        return JSON.parse(localStorage.getItem(LS.cfg)) || {};
+      } catch { return {}; }
+    }
+
+    function saveCfg() {
+      const cfg = {
+        start: +document.getElementById('cfg-start').value,
+        balance: +document.getElementById('cfg-balance').value,
+        maxloss: +document.getElementById('cfg-maxloss').value,
+        goal: +document.getElementById('cfg-goal').value,
+        risk: +document.getElementById('cfg-risk').value,
+        maxtrades: +document.getElementById('cfg-maxtrades').value,
+      };
+      localStorage.setItem(LS.cfg, JSON.stringify(cfg));
+      refreshDashboard();
+    }
+
+    function initCfg() {
+      const c = loadCfg();
+      if (c.start != null) document.getElementById('cfg-start').value = c.start;
+      if (c.balance != null) document.getElementById('cfg-balance').value = c.balance;
+      if (c.maxloss != null) document.getElementById('cfg-maxloss').value = c.maxloss;
+      if (c.goal != null) document.getElementById('cfg-goal').value = c.goal;
+      if (c.risk != null) document.getElementById('cfg-risk').value = c.risk;
+      if (c.maxtrades != null) document.getElementById('cfg-maxtrades').value = c.maxtrades;
+    }
+
+    function getPhase() {
+      return localStorage.getItem(LS.phase) || 'paper';
+    }
+
+    function setPhase(p) {
+      localStorage.setItem(LS.phase, p);
+      document.querySelectorAll('.phase').forEach(el => {
+        el.classList.toggle('active', el.dataset.phase === p);
+      });
+      calcSize();
+    }
+
+    function loadTrades() {
+      try {
+        return JSON.parse(localStorage.getItem(LS.trades)) || [];
+      } catch { return []; }
+    }
+
+    function saveTrades(trades) {
+      localStorage.setItem(LS.trades, JSON.stringify(trades));
+      renderLog();
+      refreshDashboard();
+    }
+
+    function todayTrades() {
+      const d = todayKey();
+      return loadTrades().filter(t => t.date === d);
+    }
+
+    function refreshDashboard() {
+      const c = loadCfg();
+      const start = c.start ?? 10000;
+      const balance = c.balance ?? start;
+      const maxloss = c.maxloss ?? 175;
+      const goal = c.goal ?? 175;
+      const maxtrades = c.maxtrades ?? 5;
+
+      const today = todayTrades();
+      const todayPnl = today.reduce((s, t) => s + t.pnl, 0);
+      const lossLeft = maxloss + todayPnl;
+      const dd = start > 0 ? ((start - balance) / start * 100) : 0;
+
+      const all = loadTrades();
+      const wins = all.filter(t => t.pnl > 0).length;
+      const winRate = all.length ? (wins / all.length * 100).toFixed(0) + '%' : '—';
+
+      document.getElementById('stat-balance').querySelector('.v').textContent =
+        '$' + balance.toLocaleString(undefined, { maximumFractionDigits: 0 });
+      document.getElementById('stat-today').querySelector('.v').textContent =
+        (todayPnl >= 0 ? '+' : '') + '$' + todayPnl.toFixed(0);
+      document.getElementById('stat-today').className = 'stat ' + (todayPnl >= 0 ? 'ok' : 'warn');
+      document.getElementById('stat-trades').querySelector('.v').textContent = String(today.length);
+      document.getElementById('stat-left').querySelector('.v').textContent =
+        '$' + Math.max(0, lossLeft).toFixed(0);
+      document.getElementById('stat-left').className = 'stat ' + (lossLeft <= 0 ? 'warn' : '');
+      document.getElementById('stat-win').querySelector('.v').textContent = winRate;
+      document.getElementById('stat-dd').querySelector('.v').textContent = dd.toFixed(1) + '%';
+      document.getElementById('stat-dd').className = 'stat ' + (dd >= 15 ? 'warn' : '');
+
+      const banner = document.getElementById('session-banner');
+      banner.classList.remove('hide', 'stop', 'go');
+      if (todayPnl <= -maxloss) {
+        banner.classList.add('stop');
+        banner.textContent = '⛔ STOP TRADING — daily max loss hit ($' + maxloss + '). Log review only.';
+      } else if (todayPnl >= goal) {
+        banner.classList.add('go');
+        banner.textContent = '✓ Daily goal reached ($' + goal + '). No new trades — protect gains.';
+      } else if (today.length >= maxtrades) {
+        banner.classList.add('stop');
+        banner.textContent = '⛔ Max trades for today (' + maxtrades + '). Done for the session.';
+      } else if (balance <= start * 0.8) {
+        banner.classList.add('stop');
+        banner.textContent = '⛔ Sleeve at 20% drawdown ($' + (start * 0.8).toFixed(0) + ' floor). Paper only for 30 days.';
+      } else {
+        banner.classList.add('hide');
+      }
+
+      const addBtn = document.getElementById('add-trade');
+      const blocked = todayPnl <= -maxloss || todayPnl >= goal || today.length >= maxtrades;
+      addBtn.disabled = false;
+    }
+
+    function calcSize() {
+      const c = loadCfg();
+      const risk$ = c.risk ?? 75;
+      const entry = +document.getElementById('sz-entry').value;
+      const stop = +document.getElementById('sz-stop').value;
+      const target = +document.getElementById('sz-target').value;
+      const phaseSel = document.getElementById('sz-phase').value;
+      let phase = phaseSel === 'auto' ? getPhase() : phaseSel;
+
+      const perShare = Math.abs(entry - stop);
+      const el = document.getElementById('sz-result');
+      if (!entry || !perShare) {
+        el.textContent = 'Enter valid entry and stop.';
+        el.classList.remove('blocked');
+        return;
+      }
+
+      if (phase === 'paper') {
+        el.innerHTML = '<strong>Paper phase</strong> — log trades at 0 shares or use simulator. No live orders.';
+        el.classList.remove('blocked');
+        return;
+      }
+
+      let shares = Math.floor(risk$ / perShare);
+      if (phase === 'micro') shares = Math.min(shares, 25);
+      const pos$ = shares * entry;
+      const reward = Math.abs(target - entry) * shares;
+      const riskTotal = perShare * shares;
+      const rr = riskTotal > 0 ? (reward / riskTotal).toFixed(1) : '—';
+
+      el.innerHTML =
+        '<strong>' + shares.toLocaleString() + '</strong> shares · ' +
+        '$' + pos$.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' position<br>' +
+        '<span style="color:var(--muted)">Risk $' + riskTotal.toFixed(0) + ' · ' +
+        'Target $' + reward.toFixed(0) + ' · R:R ' + rr + ':1 · Phase: ' + phase + '</span>';
+      el.classList.toggle('blocked', shares < 1);
+    }
+
+    function initChecklist() {
+      const key = LS.checklist + '_' + todayKey();
+      let saved = {};
+      try { saved = JSON.parse(localStorage.getItem(key)) || {}; } catch {}
+      document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb => {
+        cb.checked = !!saved[cb.dataset.id];
+        cb.addEventListener('change', () => {
+          saved[cb.dataset.id] = cb.checked;
+          localStorage.setItem(key, JSON.stringify(saved));
+        });
+      });
+      document.getElementById('today-date').textContent =
+        new Date().toLocaleDateString(undefined, { weekday: 'long', month: 'short', day: 'numeric' });
+    }
+
+    function resetChecklist() {
+      localStorage.removeItem(LS.checklist + '_' + todayKey());
+      document.querySelectorAll('.checklist input[type=checkbox]').forEach(cb => { cb.checked = false; });
+    }
+
+    function loadGaps() {
+      try {
+        const raw = localStorage.getItem(LS.gaps);
+        const all = raw ? JSON.parse(raw) : {};
+        return all[todayKey()] || [];
+      } catch { return []; }
+    }
+
+    function saveGaps(list) {
+      let all = {};
+      try { all = JSON.parse(localStorage.getItem(LS.gaps)) || {}; } catch {}
+      all[todayKey()] = list;
+      localStorage.setItem(LS.gaps, JSON.stringify(all));
+      renderGaps();
+    }
+
+    function renderGaps() {
+      const list = loadGaps();
+      document.getElementById('gap-body').innerHTML = list.length ? list.map((g, i) => `
+        <tr>
+          <td><strong>${g.sym}</strong></td>
+          <td class="pos">+${g.pct}%</td>
+          <td>${g.pmh ? '$' + g.pmh : '—'}</td>
+          <td style="color:var(--muted);font-size:0.8rem">${g.cat || '—'}</td>
+          <td style="font-size:0.75rem;color:var(--muted)">ORH / PM high break</td>
+          <td><button type="button" class="secondary" data-rm-gap="${i}" style="padding:4px 8px;font-size:0.75rem">×</button></td>
+        </tr>`).join('') : '<tr><td colspan="6" style="color:var(--muted)">No gappers added yet — scan premarket and add candidates.</td></tr>';
+
+      document.querySelectorAll('[data-rm-gap]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const list = loadGaps();
+          list.splice(+btn.dataset.rmGap, 1);
+          saveGaps(list);
+        });
+      });
+    }
+
+    function renderLog() {
+      const trades = loadTrades().slice().reverse();
+      document.getElementById('log-body').innerHTML = trades.length ? trades.map((t, i) => {
+        const idx = loadTrades().length - 1 - i;
+        const pill = t.setup.includes('Gap') ? 'gap' : t.setup.includes('Micro') ? 'micro' : 'flag';
+        return `<tr>
+          <td>${t.date}</td>
+          <td><strong>${t.sym}</strong></td>
+          <td><span class="pill ${pill}">${t.setup}</span></td>
+          <td>${t.shares}</td>
+          <td>$${t.entry.toFixed(2)}</td>
+          <td>$${t.exit.toFixed(2)}</td>
+          <td class="${t.pnl >= 0 ? 'pos' : 'neg'}">${t.pnl >= 0 ? '+' : ''}$${t.pnl.toFixed(2)}</td>
+          <td style="color:var(--muted);font-size:0.75rem">${t.notes || ''}</td>
+          <td><button type="button" class="secondary" data-rm-trade="${idx}" style="padding:4px 8px;font-size:0.75rem">×</button></td>
+        </tr>`;
+      }).join('') : '<tr><td colspan="9" style="color:var(--muted)">No trades logged yet.</td></tr>';
+
+      document.querySelectorAll('[data-rm-trade]').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const trades = loadTrades();
+          trades.splice(+btn.dataset.rmTrade, 1);
+          saveTrades(trades);
+        });
+      });
+    }
+
+    function addTrade() {
+      const date = document.getElementById('log-date').value || todayKey();
+      const sym = document.getElementById('log-sym').value.trim().toUpperCase();
+      const setup = document.getElementById('log-setup').value;
+      const shares = +document.getElementById('log-shares').value;
+      const entry = +document.getElementById('log-entry').value;
+      const exit = +document.getElementById('log-exit').value;
+      const notes = document.getElementById('log-notes').value.trim();
+      if (!sym || !shares || !entry || exit === undefined || isNaN(exit)) {
+        alert('Fill symbol, shares, entry, and exit.');
+        return;
+      }
+      const pnl = (exit - entry) * shares;
+      const trades = loadTrades();
+      trades.push({ date, sym, setup, shares, entry, exit, pnl, notes });
+      saveTrades(trades);
+
+      const c = loadCfg();
+      const bal = (c.balance ?? 10000) + (date === todayKey() ? pnl : 0);
+      document.getElementById('cfg-balance').value = bal.toFixed(2);
+      saveCfg();
+
+      document.getElementById('log-sym').value = '';
+      document.getElementById('log-shares').value = '';
+      document.getElementById('log-entry').value = '';
+      document.getElementById('log-exit').value = '';
+      document.getElementById('log-notes').value = '';
+    }
+
+    function exportCsv() {
+      const trades = loadTrades();
+      if (!trades.length) { alert('No trades to export.'); return; }
+      const hdr = 'date,symbol,setup,shares,entry,exit,pnl,notes\n';
+      const rows = trades.map(t =>
+        [t.date, t.sym, t.setup, t.shares, t.entry, t.exit, t.pnl, '"' + (t.notes || '').replace(/"/g, '""') + '"'].join(',')
+      ).join('\n');
+      const blob = new Blob([hdr + rows], { type: 'text/csv' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'warrior_trades_' + todayKey() + '.csv';
+      a.click();
+    }
+
+    document.getElementById('save-cfg').addEventListener('click', saveCfg);
+    document.getElementById('reset-checklist').addEventListener('click', resetChecklist);
+    document.getElementById('add-trade').addEventListener('click', addTrade);
+    document.getElementById('export-csv').addEventListener('click', exportCsv);
+    document.getElementById('clear-log').addEventListener('click', () => {
+      if (confirm('Delete all logged trades? This cannot be undone.')) {
+        localStorage.removeItem(LS.trades);
+        renderLog();
+        refreshDashboard();
+      }
+    });
+
+    document.getElementById('add-gap').addEventListener('click', () => {
+      const sym = document.getElementById('gap-sym').value.trim().toUpperCase();
+      const pct = document.getElementById('gap-pct').value;
+      const pmh = document.getElementById('gap-pmh').value;
+      const cat = document.getElementById('gap-cat').value.trim();
+      if (!sym) return;
+      const list = loadGaps();
+      list.push({ sym, pct: pct || '?', pmh: pmh || '', cat });
+      saveGaps(list);
+      document.getElementById('gap-sym').value = '';
+      document.getElementById('gap-pct').value = '';
+      document.getElementById('gap-pmh').value = '';
+      document.getElementById('gap-cat').value = '';
+    });
+
+    document.querySelectorAll('.phase').forEach(el => {
+      el.addEventListener('click', () => setPhase(el.dataset.phase));
+    });
+
+    ['sz-entry', 'sz-stop', 'sz-target', 'sz-phase'].forEach(id =>
+      document.getElementById(id).addEventListener('input', calcSize));
+
+    ['cfg-start', 'cfg-balance', 'cfg-maxloss', 'cfg-goal', 'cfg-risk', 'cfg-maxtrades'].forEach(id =>
+      document.getElementById(id).addEventListener('change', refreshDashboard));
+
+    document.getElementById('log-date').value = todayKey();
+
+    initCfg();
+    setPhase(getPhase());
+    initChecklist();
+    renderGaps();
+    renderLog();
+    refreshDashboard();
+    calcSize();
+
+    fetch((window.DashboardPaths?.data || '../data/') + 'portfolio_snapshot.json?t=' + Date.now(), { cache: 'no-store' })
+      .then(r => r.ok ? r.json() : null)
+      .then(d => {
+        if (!d) return;
+        const total = d.account.total_value;
+        const el = document.querySelector('.sub');
+        if (el) el.textContent += ' · Main account $' + total.toLocaleString(undefined, { maximumFractionDigits: 0 }) + ' (separate from $10k sleeve)';
+      })
+      .catch(() => {});
+  </script>
+</body>
+</html>
