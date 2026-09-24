@@ -1,0 +1,319 @@
+{
+  "built_at": "2026-09-04T15:00:58Z",
+  "account_value": 110215.28,
+  "candidates": [
+    {
+      "symbol": "HOOD",
+      "price": 106.99,
+      "ret_1m": 15.3,
+      "ret_3m": 21.1,
+      "ret_6m": 32.8,
+      "adr_pct": 4.9,
+      "above_10ma": true,
+      "above_20ma": true,
+      "setup": "Breakout candidate",
+      "score": 8,
+      "notes": [
+        "+15.3% 1m",
+        "+21.1% 3m",
+        "+32.8% 6m",
+        "above 10/20 MA"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Observe"
+    },
+    {
+      "symbol": "AAPL",
+      "price": 324.96,
+      "ret_1m": 4.5,
+      "ret_3m": 4.4,
+      "ret_6m": 24.8,
+      "adr_pct": 1.97,
+      "above_10ma": true,
+      "above_20ma": true,
+      "setup": "Watch \u2014 momentum",
+      "score": 4,
+      "notes": [
+        "+24.8% 6m",
+        "above 10/20 MA"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "NVDA",
+      "price": 224.41,
+      "ret_1m": 2.4,
+      "ret_3m": 2.6,
+      "ret_6m": 22.4,
+      "adr_pct": 2.63,
+      "above_10ma": true,
+      "above_20ma": true,
+      "setup": "Watch \u2014 momentum",
+      "score": 4,
+      "notes": [
+        "+22.4% 6m",
+        "above 10/20 MA"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "NFLX",
+      "price": 82.73,
+      "ret_1m": 11.5,
+      "ret_3m": 1.4,
+      "ret_6m": -16.6,
+      "adr_pct": 2.66,
+      "above_10ma": true,
+      "above_20ma": true,
+      "setup": "Watch \u2014 momentum",
+      "score": 4,
+      "notes": [
+        "above 10/20 MA",
+        "range tightening"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "META",
+      "price": 592.85,
+      "ret_1m": 0.7,
+      "ret_3m": -5.5,
+      "ret_6m": -10.3,
+      "adr_pct": 3.05,
+      "above_10ma": true,
+      "above_20ma": true,
+      "setup": "Watch \u2014 momentum",
+      "score": 3,
+      "notes": [
+        "above 10/20 MA",
+        "range tightening"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "AMAT",
+      "price": 438.46,
+      "ret_1m": -17.9,
+      "ret_3m": -12.6,
+      "ret_6m": 26.5,
+      "adr_pct": 3.7,
+      "above_10ma": false,
+      "above_20ma": false,
+      "setup": "Not a breakout",
+      "score": 2,
+      "notes": [
+        "+26.5% 6m"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Observe"
+    },
+    {
+      "symbol": "WMT",
+      "price": 107.55,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Watch \u2014 momentum",
+      "score": 1,
+      "notes": [
+        "Defensive; ~$108"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "IBIT",
+      "price": 44.66,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Watch \u2014 momentum",
+      "score": 1,
+      "notes": [
+        "Trimmed 75\u21921; leftover share"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Observe"
+    },
+    {
+      "symbol": "CLS",
+      "price": 277.77,
+      "ret_1m": -23.4,
+      "ret_3m": -34.7,
+      "ret_6m": 4.5,
+      "adr_pct": 4.83,
+      "above_10ma": false,
+      "above_20ma": false,
+      "setup": "Not a breakout",
+      "score": 0,
+      "notes": [],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "RGTI",
+      "price": 14.87,
+      "ret_1m": -11.4,
+      "ret_3m": -38.5,
+      "ret_6m": -12.4,
+      "adr_pct": 5.6,
+      "above_10ma": false,
+      "above_20ma": false,
+      "setup": "Not a breakout",
+      "score": 0,
+      "notes": [],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "APLD",
+      "price": 24.91,
+      "ret_1m": -16.6,
+      "ret_3m": -43.6,
+      "ret_6m": -11.3,
+      "adr_pct": 6.17,
+      "above_10ma": false,
+      "above_20ma": false,
+      "setup": "Not a breakout",
+      "score": 0,
+      "notes": [],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "SOUN",
+      "price": 6.71,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "Pending sell order on 700 shares"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "TSLA",
+      "price": 354.73,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "Small satellite"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Keep"
+    },
+    {
+      "symbol": "AVGO",
+      "price": 356.21,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "1 share; put spreads still on"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Observe"
+    },
+    {
+      "symbol": "PYPL",
+      "price": 54.93,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "1 share dust"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "SOFI",
+      "price": 18.1,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "1 share dust"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "CSEX",
+      "price": 11.9,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "2x CLS duplicate; 1 share dust"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    },
+    {
+      "symbol": "QQQ",
+      "price": 717.89,
+      "ret_1m": null,
+      "ret_3m": null,
+      "ret_6m": null,
+      "adr_pct": null,
+      "above_10ma": null,
+      "above_20ma": null,
+      "setup": "Review",
+      "score": 0,
+      "notes": [
+        "Rounding error"
+      ],
+      "in_portfolio": true,
+      "portfolio_action": "Sell"
+    }
+  ],
+  "ep_watch": [],
+  "rules_reminder": {
+    "max_overnight_pct": 30,
+    "typical_position_pct": "10-20",
+    "risk_per_trade_pct": "0.25-1"
+  }
+}

@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trading Setups — Qullamaggie Framework</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #171a22;
+      --border: #2a2f3a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --green: #3dd68c;
+      --red: #f07178;
+      --yellow: #e7c547;
+      --blue: #6cb6ff;
+      --purple: #c792ea;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.55;
+    }
+    .wrap { max-width: 900px; margin: 0 auto; padding: 24px 16px 64px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    h2 { font-size: 1.15rem; margin: 0 0 10px; }
+    h3 { font-size: 0.95rem; margin: 16px 0 8px; color: var(--blue); }
+    .sub { color: var(--muted); font-size: 0.875rem; margin-bottom: 20px; }
+    .nav { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 24px; font-size: 0.875rem; }
+    .nav a { color: var(--blue); text-decoration: none; }
+    .nav a:hover { text-decoration: underline; }
+    .nav .sep { color: var(--border); }
+
+    .hero {
+      background: linear-gradient(135deg, #1a2233 0%, var(--surface) 100%);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 28px;
+    }
+    .hero p { margin: 0; color: var(--muted); font-size: 0.9rem; }
+    .hero .quote { margin-top: 12px; font-style: italic; color: var(--text); border-left: 3px solid var(--blue); padding-left: 12px; }
+
+    .setup-nav {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .setup-nav a {
+      display: block;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px;
+      text-decoration: none;
+      color: var(--text);
+      transition: border-color 0.15s;
+    }
+    .setup-nav a:hover { border-color: var(--blue); }
+    .setup-nav .num { font-size: 0.7rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.05em; }
+    .setup-nav .title { font-weight: 600; margin-top: 4px; }
+    .setup-nav .plain { font-size: 0.8rem; color: var(--muted); margin-top: 4px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 24px;
+      scroll-margin-top: 16px;
+    }
+    .card-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 16px; }
+    .badge {
+      flex-shrink: 0;
+      width: 36px; height: 36px;
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-weight: 700; font-size: 1rem;
+    }
+    .badge.b1 { background: #1a3d2e; color: var(--green); }
+    .badge.b2 { background: #3d361a; color: var(--yellow); }
+    .badge.b3 { background: #3d1f3d; color: var(--purple); }
+
+    .layman {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      margin-bottom: 16px;
+    }
+    .layman-label {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      color: var(--yellow);
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+    .layman p { margin: 0; font-size: 0.925rem; }
+
+    .steps { margin: 0; padding-left: 20px; }
+    .steps li { margin-bottom: 8px; }
+    .steps li strong { color: var(--text); }
+
+    .checklist {
+      list-style: none;
+      margin: 12px 0 0;
+      padding: 0;
+    }
+    .checklist li {
+      display: flex;
+      gap: 10px;
+      padding: 8px 0;
+      border-bottom: 1px solid var(--border);
+      font-size: 0.875rem;
+    }
+    .checklist li:last-child { border-bottom: none; }
+    .checklist input[type="checkbox"] {
+      flex-shrink: 0;
+      width: 16px; height: 16px;
+      margin-top: 3px;
+      accent-color: var(--blue);
+    }
+
+    .rules-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      margin-top: 12px;
+    }
+    .rule {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+      font-size: 0.85rem;
+    }
+    .rule .val { font-size: 1.1rem; font-weight: 600; color: var(--blue); }
+    .rule .lbl { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+
+    .analogy {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 8px;
+      align-items: center;
+      text-align: center;
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin: 12px 0;
+      padding: 12px;
+      background: var(--bg);
+      border-radius: 8px;
+    }
+    .analogy .arrow { color: var(--blue); font-size: 1.2rem; }
+
+    .tag { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; margin-right: 6px; }
+    .tag.buy { background: #1a3d2e; color: var(--green); }
+    .tag.sell { background: #3d1f1f; color: var(--red); }
+    .tag.hold { background: #3d361a; color: var(--yellow); }
+
+    .source { margin-top: 32px; padding-top: 16px; border-top: 1px solid var(--border); font-size: 0.8rem; color: var(--muted); }
+    .source a { color: var(--blue); }
+
+    .live-panel { margin-bottom: 28px; }
+    .live-panel h2 { margin-bottom: 4px; }
+    .live-meta { color: var(--muted); font-size: 0.8rem; margin-bottom: 12px; }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); max-height: 360px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; position: sticky; top: 0; background: var(--surface); }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.68rem; font-weight: 600; }
+    .pill.hot { background: #1a3d2e; color: var(--green); }
+    .pill.watch { background: #3d361a; color: var(--yellow); }
+    .pill.ep { background: #1a2a3d; color: var(--blue); }
+    .pill.owned { background: #252830; color: var(--muted); border: 1px solid var(--border); }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+    .sizer { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin-top: 12px; }
+    .sizer label { display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--muted); }
+    .sizer input {
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 8px; font-size: 0.875rem;
+    }
+    .sizer-result {
+      margin-top: 12px; padding: 12px; border-radius: 8px;
+      background: var(--bg); border: 1px solid var(--border); font-size: 0.875rem;
+    }
+    .two-col { display: grid; gap: 16px; grid-template-columns: 1fr 1fr; }
+    @media (max-width: 700px) { .two-col { grid-template-columns: 1fr; } }
+  </style>
+  <script src="js/paths.js"></script>
+  <script src="js/sync-bar.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <nav class="nav">
+      <a href="index.html">← Portfolio</a>
+      <span class="sep">·</span>
+      <a href="calendar.html">P&amp;L Calendar</a>
+      <span class="sep">·</span>
+      <a href="calendar_daily.html">Daily P&amp;L</a>
+      <span class="sep">·</span>
+      <a href="warrior_trades.html">Warrior $10k</a>
+    </nav>
+
+    <h1>3 Timeless Setups</h1>
+    <p class="sub">Swing-trading playbook from Kristjan Kullamägi (Qullamaggie) — rules to scan, enter, and exit</p>
+
+    <div class="hero">
+      <p>These patterns repeat across decades and markets. The edge is not prediction — it's spotting the same story (momentum + tight risk) over and over.</p>
+      <p class="quote">"What has happened in the past will happen again, and again, and again." — Jesse Livermore</p>
+    </div>
+
+    <div class="setup-nav">
+      <a href="#watchlist">
+        <div class="num">Live</div>
+        <div class="title">Today's watchlist</div>
+        <div class="plain">Momentum scan on your book</div>
+      </a>
+      <a href="#breakout">
+        <div class="num">Setup 1</div>
+        <div class="title">Breakout</div>
+        <div class="plain">Stock rests, then jumps out of a box</div>
+      </a>
+      <a href="#ep">
+        <div class="num">Setup 2</div>
+        <div class="title">Episodic Pivot (EP)</div>
+        <div class="plain">Big surprise news → gap up</div>
+      </a>
+      <a href="#parabolic">
+        <div class="num">Setup 3</div>
+        <div class="title">Parabolic Short / Long</div>
+        <div class="plain">Rubber band stretched too far</div>
+      </a>
+      <a href="#risk">
+        <div class="num">Always</div>
+        <div class="title">Risk &amp; sizing</div>
+        <div class="plain">Rules before any trade</div>
+      </a>
+    </div>
+
+    <!-- LIVE WATCHLIST -->
+    <section class="card live-panel" id="watchlist">
+      <h2>Today's watchlist</h2>
+      <p class="live-meta" id="watch-meta">Loading momentum scan…</p>
+      <div class="two-col">
+        <div>
+          <h3>Breakout / momentum (your holdings)</h3>
+          <div class="table-wrap">
+            <table>
+              <thead><tr>
+                <th>Symbol</th><th>Setup</th><th>3m</th><th>6m</th><th>ADR</th><th>Notes</th>
+              </tr></thead>
+              <tbody id="watch-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div>
+          <h3>EP watch — earnings gaps</h3>
+          <div class="table-wrap" style="max-height:200px">
+            <table>
+              <thead><tr><th>Symbol</th><th>Event</th></tr></thead>
+              <tbody id="ep-body"></tbody>
+            </table>
+          </div>
+          <h3 style="margin-top:20px">Position size calculator</h3>
+          <div class="sizer">
+            <label>Account $<input type="number" id="sz-acct" value="96457" /></label>
+            <label>Risk %<input type="number" id="sz-risk" value="1" step="0.25" /></label>
+            <label>Entry $<input type="number" id="sz-entry" value="100" step="0.01" /></label>
+            <label>Stop $<input type="number" id="sz-stop" value="95" step="0.01" /></label>
+          </div>
+          <div class="sizer-result" id="sz-result">Enter prices to size the trade.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SETUP 1: BREAKOUT -->
+    <article class="card" id="breakout">
+      <div class="card-header">
+        <div class="badge b1">1</div>
+        <div>
+          <h2>Breakout</h2>
+          <span class="tag buy">Buy</span><span class="tag hold">Swing days → weeks</span>
+        </div>
+      </div>
+
+      <div class="layman">
+        <div class="layman-label">In plain English</div>
+        <p>Imagine a stock that ran up like a rocket, then took a breather — it drifted sideways in a tight range, like a sprinter catching their breath at the top of a hill. When it finally pushes above that resting zone on strong volume, you're betting the run isn't over. You're buying the <em>second leg</em> of the staircase, not the first.</p>
+      </div>
+
+      <div class="analogy">
+        <div>Big run up<br><small>30–100%+ in weeks</small></div>
+        <div class="arrow">→</div>
+        <div>Tight rest<br><small>2 weeks – 2 months</small></div>
+        <div class="arrow">→</div>
+        <div>Break above range<br><small>Enter on strength</small></div>
+      </div>
+
+      <h3>How to find candidates</h3>
+      <ul class="steps">
+        <li>Scan for stocks in the <strong>top 1–2%</strong> of performers over <strong>1 month, 3 months, and 6 months</strong> — these are today's leaders.</li>
+        <li>Run scans <strong>weekly</strong>.</li>
+        <li>Look for: (1) a prior big move, (2) orderly pullback with higher lows and tightening range, (3) price "surfing" the rising 10- and 20-day moving averages.</li>
+      </ul>
+
+      <h3>How to trade it</h3>
+      <ul class="steps">
+        <li><strong>Entry:</strong> Buy when price breaks above the <strong>opening range high</strong> (ORH) — first 1-min, 5-min, or 60-min candle high after the open. Or enter when the daily chart shows a clean breakout.</li>
+        <li><strong>Stop:</strong> Low of the day. Keep stop ≤ the stock's average daily range (ADR/ATR) so risk/reward stays sane.</li>
+        <li><strong>Take profit:</strong> Sell <strong>⅓ to ½</strong> after 3–5 days, move stop to breakeven. Trail the rest with the <strong>10-day MA</strong> (beginners) or 20-day if the stock moves slower — exit on first <strong>close below</strong> the MA.</li>
+      </ul>
+
+      <h3>Pre-market checklist</h3>
+      <ul class="checklist">
+        <li><input type="checkbox" /> Stock in top 1–2% on 1/3/6-month scans</li>
+        <li><input type="checkbox" /> Prior 30–100%+ move, then 2+ weeks consolidation</li>
+        <li><input type="checkbox" /> Higher lows, tightening range, riding 10/20 MA</li>
+        <li><input type="checkbox" /> Watchlist + alerts set before open</li>
+        <li><input type="checkbox" /> Share size calculated (risk ≤ 1% of account)</li>
+        <li><input type="checkbox" /> Stop width ≤ ADR/ATR of the stock</li>
+      </ul>
+    </article>
+
+    <!-- SETUP 2: EP -->
+    <article class="card" id="ep">
+      <div class="card-header">
+        <div class="badge b2">2</div>
+        <div>
+          <h2>Episodic Pivot (EP)</h2>
+          <span class="tag buy">Buy</span><span class="tag hold">Swing weeks → months</span>
+        </div>
+      </div>
+
+      <div class="layman">
+        <div class="layman-label">In plain English</div>
+        <p>A stock nobody cared about (or forgot about) suddenly reports blowout earnings or news. The market wakes up and gaps the stock up 10%+ on huge volume — like a quiet restaurant getting a Michelin star overnight. You're buying the moment the market <em>re-prices</em> the company, not chasing a stock that's already been hot for months.</p>
+      </div>
+
+      <h3>What counts as a real EP</h3>
+      <ul class="steps">
+        <li><strong>Gap up 10%+</strong> on the news.</li>
+        <li><strong>Massive volume</strong> — ideally average daily volume traded in the first 15–30 minutes, or heavy pre-market volume.</li>
+        <li>For earnings EPs: <strong>big growth</strong> (mid/high or triple-digit EPS &amp; revenue) and a <strong>significant beat</strong> vs analyst estimates.</li>
+        <li>Best when the stock has <strong>not already rallied</strong> hard over the prior 3–6 months — the surprise should be genuine.</li>
+        <li>A gap with big numbers but <strong>no volume or immediate sell-off</strong> is NOT an EP (see NVDA 2016 middle arrow in the blog).</li>
+      </ul>
+
+      <h3>How to trade it</h3>
+      <ul class="steps">
+        <li><strong>Spot it:</strong> After-hours or pre-market — look for gappers on earnings/news.</li>
+        <li><strong>Entry:</strong> ORH (same as breakouts). Stop at low of the day.</li>
+        <li><strong>Exit:</strong> Trail with 10- or 20-day MA once price moves above your initial stop level. Create your own sell rules — these can run for months.</li>
+      </ul>
+
+      <h3>Pre-market checklist</h3>
+      <ul class="checklist">
+        <li><input type="checkbox" /> Gap ≥ 10% on meaningful catalyst</li>
+        <li><input type="checkbox" /> Volume surging (pre-market or first 15–30 min)</li>
+        <li><input type="checkbox" /> Earnings: strong growth + beat (if applicable)</li>
+        <li><input type="checkbox" /> Stock wasn't already extended 3–6 months</li>
+        <li><input type="checkbox" /> Not buying a gap that immediately fades</li>
+        <li><input type="checkbox" /> ORH entry plan + stop at LOD defined</li>
+      </ul>
+    </article>
+
+    <!-- SETUP 3: PARABOLIC -->
+    <article class="card" id="parabolic">
+      <div class="card-header">
+        <div class="badge b3">3</div>
+        <div>
+          <h2>Parabolic Short (or Long)</h2>
+          <span class="tag sell">Short (or bounce long)</span><span class="tag hold">Days</span>
+        </div>
+      </div>
+
+      <div class="layman">
+        <div class="layman-label">In plain English</div>
+        <p>A stock goes straight up so fast it looks vertical — like pulling a rubber band too far. Eventually it snaps back. You wait for the first sign of weakness (not the top — let impatient shorts get burned first), then bet on a pullback toward the 10- or 20-day moving average. The <strong>long</strong> version is the mirror: after a parabolic crash of 50–60%+, buy the violent bounce.</p>
+      </div>
+
+      <h3>Short setup criteria</h3>
+      <ul class="steps">
+        <li>Stock up <strong>50–100%+</strong> in days/weeks (large caps) or <strong>300–1000%+</strong> (small caps).</li>
+        <li>Often <strong>3–5+ green days in a row</strong>, or accelerating after a long trend.</li>
+      </ul>
+
+      <h3>How to trade the short</h3>
+      <ul class="steps">
+        <li><strong>Don't be early.</strong> Wait for opening range lows, first red 5-min candle, or a failed bounce at VWAP.</li>
+        <li><strong>Entry:</strong> Short on ORL or VWAP fail (first red candle into VWAP that can't reclaim it).</li>
+        <li><strong>Stop:</strong> High of the day, or VWAP reclaim — keep stops tight and defined.</li>
+        <li><strong>Target:</strong> 10- and 20-day moving averages (where bounces usually happen).</li>
+        <li>Expect ~5–10× risk/reward (not 30–50× like breakouts/EPs), but higher win rate if patient.</li>
+      </ul>
+
+      <h3>Parabolic long (rare)</h3>
+      <ul class="steps">
+        <li>After a successful parabolic short drops <strong>50–60%+ in a few days</strong>, look for ORH or first green 5-min candle.</li>
+        <li>These can bounce <strong>50–100%</strong> in days — but they're less common.</li>
+      </ul>
+
+      <h3>Pre-market checklist</h3>
+      <ul class="checklist">
+        <li><input type="checkbox" /> Stock extended 50%+ (or 300%+ small cap) in short window</li>
+        <li><input type="checkbox" /> Multiple consecutive up days / parabolic curve visible</li>
+        <li><input type="checkbox" /> Waiting for weakness — NOT shorting into strength</li>
+        <li><input type="checkbox" /> Entry trigger defined (ORL, red 5-min, VWAP fail)</li>
+        <li><input type="checkbox" /> Stop = HOD or VWAP reclaim (tight!)</li>
+        <li><input type="checkbox" /> Target = 10/20-day MA zone</li>
+      </ul>
+    </article>
+
+    <!-- RISK RULES -->
+    <article class="card" id="risk">
+      <div class="card-header">
+        <div class="badge b1">★</div>
+        <div><h2>Universal risk &amp; sizing rules</h2></div>
+      </div>
+
+      <div class="layman">
+        <div class="layman-label">In plain English</div>
+        <p>You don't need to win every trade. You need small losses and occasional huge winners. Risk rules are the seatbelt — they keep one bad trade from wrecking the account. Even if you're wrong 70% of the time, a few 10–20× winners can still make you very profitable.</p>
+      </div>
+
+      <div class="rules-grid">
+        <div class="rule"><div class="val">≤ 30%</div><div class="lbl">Max overnight in any single stock/ETF</div></div>
+        <div class="rule"><div class="val">10–20%</div><div class="lbl">Typical position size</div></div>
+        <div class="rule"><div class="val">0.25–1%</div><div class="lbl">Risk per trade (of total account)</div></div>
+        <div class="rule"><div class="val">5–20×</div><div class="lbl">Target payoff vs initial risk</div></div>
+      </div>
+
+      <h3>Position sizing math (simple)</h3>
+      <ul class="steps">
+        <li>Decide how much you're willing to lose if stopped out — e.g. <strong>1% of $100k = $1,000</strong>.</li>
+        <li>Entry $50, stop $48 → <strong>$2 risk per share</strong> → buy 500 shares max ($1,000 ÷ $2).</li>
+        <li>Cap position at 30% of account even if math allows more.</li>
+      </ul>
+
+      <h3>Key concepts glossary</h3>
+      <ul class="steps">
+        <li><strong>ORH / ORL</strong> — Opening Range High/Low: the high or low of the first 1-, 5-, or 60-minute candle after the market opens. Used as entry triggers.</li>
+        <li><strong>ADR / ATR</strong> — Average Daily Range / Average True Range: how much the stock typically moves per day. Your stop shouldn't be wider than this.</li>
+        <li><strong>10/20-day MA</strong> — Moving averages on the daily chart. Stocks in strong trends "surf" above them; a close below = trend weakening.</li>
+        <li><strong>VWAP</strong> — Volume-weighted average price for the day. Parabolic shorts often fail at VWAP bounces.</li>
+        <li><strong>DTE</strong> — Days to expiration (for options). Not part of Qullamaggie's stock setups but relevant to your book.</li>
+      </ul>
+    </article>
+
+    <div class="source">
+      Based on
+      <a href="https://qullamaggie.com/my-3-timeless-setups-that-have-made-me-tens-of-millions/" target="_blank" rel="noopener">Qullamaggie — 3 Timeless Setups</a>
+      (Kristjan Kullamägi, Jan 2021). Educational reference only — not financial advice.
+    </div>
+  </div>
+  <script>
+    const pct = n => n == null ? '—' : (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+    const pillClass = s => s.includes('Breakout') ? 'hot' : s.includes('Watch') ? 'watch' : 'owned';
+
+    function loadSetups() {
+      fetch((window.DashboardPaths?.data || '../data/') + 'setup_watchlist.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.json())
+        .then(d => {
+          document.getElementById('watch-meta').textContent =
+            'Account $' + d.account_value.toLocaleString() + ' · built ' +
+            new Date(d.built_at).toLocaleString();
+
+          document.getElementById('sz-acct').value = Math.round(d.account_value);
+
+          const rows = d.candidates.filter(c => c.score >= 3 || c.in_portfolio);
+          document.getElementById('watch-body').innerHTML = rows.map(c => `
+            <tr>
+              <td><strong>${c.symbol}</strong>${c.in_portfolio ? ' <span class="pill owned">owned</span>' : ''}</td>
+              <td><span class="pill ${pillClass(c.setup)}">${c.setup.replace(' — momentum','')}</span></td>
+              <td class="${(c.ret_3m||0)>=0?'pos':'neg'}">${pct(c.ret_3m)}</td>
+              <td class="${(c.ret_6m||0)>=0?'pos':'neg'}">${pct(c.ret_6m)}</td>
+              <td>${c.adr_pct != null ? c.adr_pct + '%' : '—'}</td>
+              <td style="color:var(--muted);font-size:0.75rem">${(c.notes||[]).join(' · ')}</td>
+            </tr>`).join('');
+
+          const ep = d.ep_watch && d.ep_watch.length ? d.ep_watch : [
+            {symbol:'LULU', note:'Reports PM today — EP if gap 10%+'},
+            {symbol:'ZS', note:'Reports PM today — EP if gap 10%+'},
+            {symbol:'DOCU', note:'Reports PM today — EP if gap 10%+'},
+            {symbol:'CIEN', note:'Beat 26% today AM — check gap/volume'},
+            {symbol:'GME', note:'Reports Mon PM'},
+          ];
+          document.getElementById('ep-body').innerHTML = ep.map(e => `
+            <tr><td><strong>${e.symbol}</strong></td>
+            <td style="color:var(--muted);font-size:0.8rem">${e.note}</td></tr>`).join('');
+          calcSize();
+        })
+        .catch(() => {
+          document.getElementById('watch-meta').textContent =
+            'Could not load setup watchlist — tap Refresh or check connection';
+        });
+    }
+
+    loadSetups();
+    window.addEventListener('portfolio:refresh', loadSetups);
+
+    function calcSize() {
+      const acct = +document.getElementById('sz-acct').value;
+      const riskPct = +document.getElementById('sz-risk').value / 100;
+      const entry = +document.getElementById('sz-entry').value;
+      const stop = +document.getElementById('sz-stop').value;
+      const risk$ = acct * riskPct;
+      const perShare = Math.abs(entry - stop);
+      if (!perShare || !entry) {
+        document.getElementById('sz-result').textContent = 'Enter valid entry and stop.';
+        return;
+      }
+      let shares = Math.floor(risk$ / perShare);
+      let pos$ = shares * entry;
+      const maxPos = acct * 0.30;
+      if (pos$ > maxPos) {
+        shares = Math.floor(maxPos / entry);
+        pos$ = shares * entry;
+      }
+      const posPct = (pos$ / acct * 100).toFixed(1);
+      document.getElementById('sz-result').innerHTML =
+        `<strong>${shares.toLocaleString()}</strong> shares · ` +
+        `$${pos$.toLocaleString(undefined,{maximumFractionDigits:0})} position (${posPct}% of account)<br>` +
+        `<span style="color:var(--muted)">Risk $${risk$.toFixed(0)} if stopped · ` +
+        `${(perShare/entry*100).toFixed(1)}% stop width · cap 30% overnight</span>`;
+    }
+    ['sz-acct','sz-risk','sz-entry','sz-stop'].forEach(id =>
+      document.getElementById(id).addEventListener('input', calcSize));
+    calcSize();
+  </script>
+</body>
+</html>

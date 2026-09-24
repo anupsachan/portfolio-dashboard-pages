@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Portfolio Command Center</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #171a22;
+      --border: #2a2f3a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --green: #3dd68c;
+      --red: #f07178;
+      --yellow: #e7c547;
+      --blue: #6cb6ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.875rem; margin-bottom: 20px; }
+    .grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); margin-bottom: 24px; }
+    .stat { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 12px; }
+    .stat .v { font-size: 1.25rem; font-weight: 600; }
+    .stat .l { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+    section { margin-bottom: 28px; }
+    h2 { font-size: 1.1rem; margin: 0 0 12px; }
+    table { width: 100%; border-collapse: collapse; font-size: 0.8125rem; }
+    th, td { text-align: left; padding: 8px 10px; border-bottom: 1px solid var(--border); vertical-align: top; }
+    th { color: var(--muted); font-weight: 500; position: sticky; top: 0; background: var(--surface); }
+    .table-wrap { overflow: auto; border: 1px solid var(--border); border-radius: 8px; background: var(--surface); max-height: 480px; }
+    .pill { display: inline-block; padding: 2px 8px; border-radius: 999px; font-size: 0.7rem; font-weight: 600; text-transform: uppercase; }
+    .Keep { background: #1a3d2e; color: var(--green); }
+    .Observe { background: #3d361a; color: var(--yellow); }
+    .Sell, .Close { background: #3d1f1f; color: var(--red); }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+    .scorer { background: var(--surface); border: 1px solid var(--border); border-radius: 8px; padding: 16px; }
+    .row { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 12px; }
+    label { display: flex; flex-direction: column; gap: 4px; font-size: 0.75rem; color: var(--muted); min-width: 120px; }
+    input, select, textarea {
+      background: var(--bg); border: 1px solid var(--border); color: var(--text);
+      border-radius: 6px; padding: 8px; font-size: 0.875rem;
+    }
+    textarea { width: 100%; min-height: 60px; }
+    button {
+      background: var(--blue); color: #0f1117; border: none; border-radius: 6px;
+      padding: 8px 14px; font-weight: 600; cursor: pointer;
+    }
+    .result { margin-top: 12px; padding: 12px; border-radius: 6px; background: var(--bg); border: 1px solid var(--border); }
+    .tabs { display: flex; gap: 8px; margin-bottom: 12px; }
+    .tab { background: var(--surface); border: 1px solid var(--border); color: var(--muted); padding: 8px 14px; border-radius: 6px; cursor: pointer; }
+    .tab.active { color: var(--text); border-color: var(--blue); }
+    .hidden { display: none; }
+    .logic { color: var(--muted); max-width: 280px; }
+    @media (max-width: 600px) {
+      .tabs { overflow-x: auto; flex-wrap: nowrap; padding-bottom: 4px; }
+      .tab { flex-shrink: 0; font-size: 0.75rem; padding: 6px 10px; }
+    }
+  </style>
+  <script src="js/paths.js"></script>
+  <script src="js/sync-bar.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <h1>Portfolio Command Center</h1>
+    <p class="sub" id="synced">Loading Robinhood snapshot…</p>
+
+    <div class="grid" id="summary"></div>
+
+    <div class="tabs">
+      <button class="tab active" data-tab="stocks">Stocks</button>
+      <button class="tab" data-tab="options">Options</button>
+      <button class="tab" data-tab="calendar" onclick="location.href='calendar.html'">P&amp;L Calendar</button>
+      <button class="tab" data-tab="setups" onclick="location.href='setups.html'">Setups</button>
+      <button class="tab" data-tab="warrior" onclick="location.href='warrior_trades.html'">Warrior $10k</button>
+      <button class="tab" data-tab="scorer">New trade scorer</button>
+      <button class="tab" data-tab="framework">Framework</button>
+    </div>
+
+    <section id="panel-stocks">
+      <h2>Stocks — Keep / Observe / Sell</h2>
+      <div class="table-wrap"><table><thead><tr>
+        <th>Symbol</th><th>Qty</th><th>Price</th><th>Value</th><th>P/L</th><th>Weight</th><th>Action</th><th>Logic</th>
+      </tr></thead><tbody id="stocks-body"></tbody></table></div>
+    </section>
+
+    <section id="panel-options" class="hidden">
+      <h2>Options — Keep / Observe / Close</h2>
+      <div class="table-wrap"><table><thead><tr>
+        <th>Symbol</th><th>Spread</th><th>Exp</th><th>Qty</th><th>DTE</th><th>P/L</th><th>Action</th><th>Logic</th>
+      </tr></thead><tbody id="options-body"></tbody></table></div>
+    </section>
+
+    <section id="panel-scorer" class="hidden">
+      <h2>Score a new idea (1–5 each)</h2>
+      <div class="scorer">
+        <div class="row">
+          <label>Ticker <input id="ticker" placeholder="NVDA" /></label>
+          <label>Business quality <input type="number" id="q1" min="1" max="5" value="3" /></label>
+          <label>Valuation / entry <input type="number" id="q2" min="1" max="5" value="3" /></label>
+          <label>Trend (50-day) <input type="number" id="q3" min="1" max="5" value="3" /></label>
+          <label>Portfolio fit <input type="number" id="q4" min="1" max="5" value="3" /></label>
+          <label>Exit plan clear <input type="number" id="q5" min="1" max="5" value="3" /></label>
+        </div>
+        <label>Thesis (1 sentence)<textarea id="thesis" placeholder="I buy because… I'm wrong if…"></textarea></label>
+        <button type="button" id="score-btn">Score trade</button>
+        <div class="result" id="score-result">≥4.0 = full size · 3.0–3.9 = small · &lt;3.0 = pass</div>
+      </div>
+    </section>
+
+    <section id="panel-framework" class="hidden">
+      <h2>Weekly review checklist</h2>
+      <div class="scorer">
+        <ol style="margin:0;padding-left:20px;color:var(--muted)">
+          <li>Write thesis: “I own because ___; wrong if ___ by ___.”</li>
+          <li>Check alignment: stock view + option structure same direction?</li>
+          <li>Options: ≥50% max profit + ≤14 DTE → close. Loss ≥50% max → close.</li>
+          <li>Stock within 2% of short put strike → observe daily.</li>
+          <li>No stack: stock + 2x ETF + spreads on same ticker.</li>
+          <li>Single name ≤10–15% of portfolio; theme ≤30%.</li>
+        </ol>
+      </div>
+    </section>
+  </div>
+  <script>
+    const fmt = (n) => n >= 1000 ? '$' + n.toLocaleString(undefined, {maximumFractionDigits: 0}) : '$' + n.toFixed(2);
+    const pct = (n) => (n >= 0 ? '+' : '') + n.toFixed(1) + '%';
+
+    function renderPortfolio(data) {
+      document.getElementById('synced').textContent =
+        'Robinhood ••••0603 · synced ' + new Date(data.synced_at).toLocaleString();
+
+      const a = data.account;
+      document.getElementById('summary').innerHTML = [
+        ['Total value', fmt(a.total_value)],
+        ['Equities', fmt(a.equity_value)],
+        ['Options MTM', fmt(a.options_value)],
+        ['Cash', fmt(a.cash)],
+        ['Buying power', fmt(a.buying_power)],
+      ].map(([l,v]) => `<div class="stat"><div class="v">${v}</div><div class="l">${l}</div></div>`).join('');
+
+      document.getElementById('stocks-body').innerHTML = data.stocks.map(s => `
+        <tr>
+          <td><strong>${s.symbol}</strong></td>
+          <td>${s.qty < 1 ? s.qty.toFixed(3) : s.qty.toLocaleString()}</td>
+          <td>${fmt(s.price)}</td>
+          <td>${fmt(s.value)}</td>
+          <td class="${s.pnl_pct >= 0 ? 'pos' : 'neg'}">${pct(s.pnl_pct)}</td>
+          <td>${s.weight_pct.toFixed(1)}%</td>
+          <td><span class="pill ${s.action}">${s.action}</span></td>
+          <td class="logic">${s.logic}</td>
+        </tr>`).join('');
+
+      document.getElementById('options-body').innerHTML = data.options.map(o => `
+        <tr>
+          <td><strong>${o.symbol}</strong></td>
+          <td>${o.legs}</td>
+          <td>${o.exp}</td>
+          <td>${o.qty}</td>
+          <td>${o.dte}</td>
+          <td class="${o.pnl_pct >= 0 ? 'pos' : 'neg'}">${pct(o.pnl_pct)}</td>
+          <td><span class="pill ${o.action}">${o.action}</span></td>
+          <td class="logic">${o.logic}</td>
+        </tr>`).join('');
+    }
+
+    function loadPortfolio() {
+      const url = (window.PortfolioSyncBar?.dataUrl('portfolio_snapshot.json') ||
+        (window.DashboardPaths?.data || '../data/') + 'portfolio_snapshot.json?t=' + Date.now());
+      return fetch(url, { cache: 'no-store' })
+        .then(r => r.json())
+        .then(renderPortfolio)
+        .catch(() => {
+          document.getElementById('synced').textContent =
+            'Could not load portfolio data — tap Refresh or check connection';
+        });
+    }
+
+    loadPortfolio();
+    window.addEventListener('portfolio:refresh', loadPortfolio);
+
+    document.querySelectorAll('.tab').forEach(btn => {
+      btn.addEventListener('click', () => {
+        document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        ['stocks','options','scorer','framework'].forEach(id => {
+          document.getElementById('panel-' + id).classList.toggle('hidden', id !== btn.dataset.tab);
+        });
+      });
+    });
+
+    document.getElementById('score-btn').addEventListener('click', () => {
+      const w = [0.25, 0.25, 0.2, 0.2, 0.1];
+      const scores = [1,2,3,4,5].map((_, i) => Math.min(5, Math.max(1, +document.getElementById('q' + (i+1)).value)));
+      const avg = scores.reduce((a, s, i) => a + s * w[i], 0);
+      const ticker = document.getElementById('ticker').value || '—';
+      let verdict = avg >= 4 ? 'FULL SIZE (within 10% cap)' : avg >= 3 ? 'SMALL / watchlist only' : 'PASS — do not trade';
+      document.getElementById('score-result').innerHTML =
+        `<strong>${ticker}</strong> score: <strong>${avg.toFixed(2)}</strong> / 5 → ${verdict}` +
+        (document.getElementById('thesis').value ? `<br><span style="color:var(--muted)">Thesis: ${document.getElementById('thesis').value}</span>` : '');
+    });
+  </script>
+</body>
+</html>

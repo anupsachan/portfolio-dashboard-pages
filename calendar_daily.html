@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Daily P&L Calendar — Portfolio Command Center</title>
+  <style>
+    :root {
+      --bg: #0f1117;
+      --surface: #171a22;
+      --border: #2a2f3a;
+      --text: #e8eaed;
+      --muted: #9aa0a6;
+      --green: #3dd68c;
+      --green-bg: #1a3d2e;
+      --green-strong: #2d8f5e;
+      --red: #f07178;
+      --red-bg: #3d1f1f;
+      --red-strong: #a94444;
+      --flat-bg: #252830;
+      --none-bg: #1a1d24;
+      --blue: #6cb6ff;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, Segoe UI, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.45;
+    }
+    .wrap { max-width: 1200px; margin: 0 auto; padding: 24px 16px 48px; }
+    h1 { font-size: 1.5rem; margin: 0 0 4px; }
+    .sub { color: var(--muted); font-size: 0.875rem; margin-bottom: 20px; }
+    .nav { margin-bottom: 20px; display: flex; gap: 16px; flex-wrap: wrap; }
+    .nav a { color: var(--blue); text-decoration: none; font-size: 0.875rem; }
+    .nav a:hover { text-decoration: underline; }
+    .grid-stats {
+      display: grid;
+      gap: 12px;
+      grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+      margin-bottom: 24px;
+    }
+    .stat {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px;
+    }
+    .stat .v { font-size: 1.15rem; font-weight: 600; }
+    .stat .l { color: var(--muted); font-size: 0.75rem; margin-top: 4px; }
+    .pos { color: var(--green); }
+    .neg { color: var(--red); }
+    .legend {
+      display: flex;
+      gap: 20px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+      font-size: 0.8125rem;
+      color: var(--muted);
+    }
+    .legend span { display: flex; align-items: center; gap: 6px; }
+    .sq { width: 14px; height: 14px; border-radius: 3px; border: 1px solid var(--border); }
+    .sq.profit { background: var(--green-bg); border-color: var(--green-strong); }
+    .sq.loss { background: var(--red-bg); border-color: var(--red-strong); }
+    .sq.flat { background: var(--flat-bg); }
+    .month-block { margin-bottom: 28px; }
+    .month-head {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .month-head h2 { font-size: 1rem; margin: 0; color: var(--muted); font-weight: 500; }
+    .month-head .total { font-size: 0.9rem; font-weight: 600; }
+    .cal {
+      display: grid;
+      grid-template-columns: repeat(7, minmax(0, 1fr));
+      gap: 4px;
+      max-width: 420px;
+    }
+    .dow {
+      font-size: 0.65rem;
+      color: var(--muted);
+      text-align: center;
+      padding-bottom: 2px;
+    }
+    .day {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      border: 1px solid transparent;
+      background: var(--none-bg);
+      cursor: default;
+      min-height: 28px;
+      transition: transform 0.08s, box-shadow 0.08s;
+    }
+    .day.blank { visibility: hidden; }
+    .day.profit { background: var(--green-bg); border-color: var(--green-strong); }
+    .day.loss { background: var(--red-bg); border-color: var(--red-strong); }
+    .day.flat { background: var(--flat-bg); border-color: var(--border); opacity: 0.55; }
+    .day.future { background: transparent; border: 1px dashed var(--border); opacity: 0.25; }
+    .day:hover:not(.blank):not(.future) {
+      transform: scale(1.15);
+      z-index: 2;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.45);
+    }
+    .tooltip {
+      position: fixed;
+      pointer-events: none;
+      background: #22262f;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-size: 0.8125rem;
+      line-height: 1.35;
+      z-index: 100;
+      display: none;
+      max-width: 220px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.45);
+    }
+    .tooltip .date { color: var(--muted); font-size: 0.75rem; }
+    .tooltip .amt { font-weight: 600; margin-top: 2px; }
+    .note {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 12px 16px;
+      font-size: 0.8125rem;
+      color: var(--muted);
+      margin-top: 24px;
+    }
+    @media (max-width: 480px) {
+      .cal { max-width: 100%; gap: 3px; }
+      .day { min-height: 22px; }
+    }
+  </style>
+  <script src="js/paths.js"></script>
+  <script src="js/sync-bar.js" defer></script>
+</head>
+<body>
+  <div class="wrap">
+    <div class="nav">
+      <a href="index.html">← Portfolio Command Center</a>
+      <a href="calendar.html">Monthly calendar</a>
+      <a href="setups.html">Setups</a>
+    </div>
+    <h1>Daily P&amp;L Calendar</h1>
+    <p class="sub" id="synced">Loading…</p>
+
+    <div class="grid-stats" id="summary"></div>
+
+    <div class="legend">
+      <span><i class="sq profit"></i> Profit day</span>
+      <span><i class="sq loss"></i> Loss day</span>
+      <span><i class="sq flat"></i> No closed trades</span>
+      <span>Hover a square for exact P&amp;L</span>
+    </div>
+
+    <div id="months"></div>
+    <p class="note" id="disclaimer"></p>
+  </div>
+
+  <div class="tooltip" id="tooltip">
+    <div class="date" id="tip-date"></div>
+    <div class="amt" id="tip-amt"></div>
+    <div id="tip-trades"></div>
+  </div>
+
+  <script>
+    const fmtFull = (n) =>
+      (n >= 0 ? '+' : '') +
+      '$' + n.toLocaleString(undefined, { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+    const MONTH_NAMES = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+    const tip = document.getElementById('tooltip');
+
+    function showTip(e, label, pnl, trades, result) {
+      document.getElementById('tip-date').textContent = label;
+      const amt = document.getElementById('tip-amt');
+      amt.textContent = fmtFull(pnl);
+      amt.className = 'amt ' + (pnl > 0 ? 'pos' : pnl < 0 ? 'neg' : '');
+      document.getElementById('tip-trades').textContent =
+        result === 'flat' ? 'No closed trades' : `${trades} closed trade${trades === 1 ? '' : 's'}`;
+      tip.style.display = 'block';
+      moveTip(e);
+    }
+    function moveTip(e) {
+      tip.style.left = Math.min(e.clientX + 12, window.innerWidth - tip.offsetWidth - 8) + 'px';
+      tip.style.top = Math.min(e.clientY + 12, window.innerHeight - tip.offsetHeight - 8) + 'px';
+    }
+    function hideTip() { tip.style.display = 'none'; }
+
+    function renderDailyCalendar(data) {
+        document.getElementById('synced').textContent =
+          `${data.account_masked} · ${data.source} · ${data.timezone} · synced ${new Date(data.synced_at).toLocaleString()} · ${data.start} → ${data.end}`;
+
+        document.getElementById('summary').innerHTML = [
+          ['Total realized', fmtFull(data.total_realized), data.total_realized >= 0 ? 'pos' : 'neg'],
+          ['Win days', data.win_days, ''],
+          ['Loss days', data.loss_days, ''],
+          ['Flat days', data.flat_days, ''],
+        ].map(([l, v, cls]) =>
+          `<div class="stat"><div class="v ${cls}">${v}</div><div class="l">${l}</div></div>`
+        ).join('');
+
+        document.getElementById('disclaimer').textContent =
+          'Realized P&L from closed trades only (Robinhood PnL hub). Each square is one calendar day (US Eastern). Does not include unrealized gains, deposits, or withdrawals. Not tax advice.';
+
+        const byDate = Object.fromEntries(data.days.map(d => [d.date, d]));
+        const start = new Date(data.start + 'T12:00:00');
+        const end = new Date(data.end + 'T12:00:00');
+        const today = new Date();
+        today.setHours(12, 0, 0, 0);
+
+        const monthsEl = document.getElementById('months');
+        monthsEl.innerHTML = '';
+        let y = start.getFullYear(), m = start.getMonth();
+        const endY = end.getFullYear(), endM = end.getMonth();
+
+        while (y < endY || (y === endY && m <= endM)) {
+          const monthTotal = data.days
+            .filter(d => {
+              const dt = new Date(d.date + 'T12:00:00');
+              return dt.getFullYear() === y && dt.getMonth() === m;
+            })
+            .reduce((s, d) => s + d.realized_gain, 0);
+          const cls = monthTotal >= 0 ? 'pos' : 'neg';
+
+          const first = new Date(y, m, 1);
+          const last = new Date(y, m + 1, 0);
+          const cells = DOW.map(d => `<div class="dow">${d.slice(0, 1)}</div>`).join('');
+
+          for (let i = 0; i < first.getDay(); i++) {
+            cells += '<div class="day blank"></div>';
+          }
+
+          for (let day = 1; day <= last.getDate(); day++) {
+            const iso = `${y}-${String(m + 1).padStart(2, '0')}-${String(day).padStart(2, '0')}`;
+            const dt = new Date(y, m, day);
+            dt.setHours(12, 0, 0, 0);
+            if (dt > end) {
+              cells += '<div class="day future"></div>';
+              continue;
+            }
+            const info = byDate[iso];
+            if (!info) {
+              cells += '<div class="day flat"></div>';
+              continue;
+            }
+            cells += `<div class="day ${info.result}" data-label="${info.label}" data-pnl="${info.realized_gain}" data-trades="${info.trades}" data-result="${info.result}"></div>`;
+          }
+
+          monthsEl.innerHTML += `
+            <div class="month-block">
+              <div class="month-head">
+                <h2>${MONTH_NAMES[m]} ${y}</h2>
+                <span class="total ${cls}">${fmtFull(monthTotal)}</span>
+              </div>
+              <div class="cal">${cells}</div>
+            </div>`;
+
+          m++;
+          if (m > 11) { m = 0; y++; }
+        }
+
+        document.querySelectorAll('.day[data-pnl]').forEach(el => {
+          el.addEventListener('mouseenter', (e) =>
+            showTip(e, el.dataset.label, +el.dataset.pnl, +el.dataset.trades, el.dataset.result));
+          el.addEventListener('mousemove', moveTip);
+          el.addEventListener('mouseleave', hideTip);
+        });
+    }
+
+    function loadDailyCalendar() {
+      fetch((window.DashboardPaths?.data || '../data/') + 'pnl_daily_calendar.json?t=' + Date.now(), { cache: 'no-store' })
+        .then(r => r.json())
+        .then(renderDailyCalendar)
+        .catch(() => {
+          document.getElementById('synced').textContent =
+            'Could not load daily P&L calendar — tap Refresh or check connection';
+        });
+    }
+
+    loadDailyCalendar();
+    window.addEventListener('portfolio:refresh', loadDailyCalendar);
+  </script>
+</body>
+</html>
